@@ -3,14 +3,14 @@
 inventory management
 
 tables-
-users
-branches
-items
-item_stock
-transactions(tracks who takes what from where)
-orders from other branches
-orders
-discounts_per_quantity
+users  
+branches  
+items  
+item_stock  
+transactions(tracks who takes what from where)  
+orders from other branches  
+orders  
+discounts_per_quantity  
 
 User-
 
