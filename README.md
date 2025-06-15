@@ -24,6 +24,10 @@ Item-
 
 ID | name | category | description | image | createdAt
 
+Category-
+
+ID | name
+
 Item_stock -
 
 ID | branch_id | item_id | quantity | updatedAt

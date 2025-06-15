@@ -1,5 +1,5 @@
 from flask import Flask
-from models import *
+from models.User import User
 from data.ORMSetup import engine, Base
 
 Base.metadata.create_all(engine)
