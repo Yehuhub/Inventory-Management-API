@@ -1,5 +1,6 @@
 import psycopg2
 
+#DB details should ideally be saved locally in a .env
 DB_HOST = "localhost"
 DB_PORT = "5433"
 DB_NAME = "dbname"
