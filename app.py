@@ -1,9 +1,5 @@
 from flask import Flask
-from models.User import User
-from models.Order import Order
-from models.OrderItem import OrderItem
-from models.Price import Price
-from models.Client import Client
+from models import Branch, Category, Client, Item, ItemStock, Order, OrderItem, Price, Transaction, User
 
 from data.ORMSetup import engine, Base
 
