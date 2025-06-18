@@ -1,7 +1,6 @@
 from sqlalchemy import Integer, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship, validates
 from data.ORMSetup import Base
-from models import Order, Item
 
 
 class OrderItem(Base):

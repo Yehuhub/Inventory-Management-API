@@ -2,7 +2,6 @@ from sqlalchemy import DateTime, ForeignKey, Float, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship, validates
 from data.ORMSetup import Base
 from datetime import datetime
-from models import Item
 
 class Price(Base):
     __tablename__ = 'prices'

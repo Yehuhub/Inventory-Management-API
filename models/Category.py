@@ -8,7 +8,7 @@ class Category(Base):
     __tablename__ = 'categories'
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    name = Mapped[str] = mapped_column(unique=True, nullable=False)
+    name: Mapped[str] = mapped_column(unique=True, nullable=False)
 
     items: Mapped[List['Item']] = relationship("Item", back_populates="category")
 

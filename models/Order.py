@@ -4,7 +4,6 @@ from datetime import datetime
 from data.ORMSetup import Base
 from typing import Optional, List
 import enum
-from models import Client, User, OrderItem
 
 STATUS = ['pending', 'delivered']
 

@@ -2,7 +2,7 @@ from sqlalchemy import ForeignKey, DateTime, func
 from data.ORMSetup import Base
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from typing import Optional
-from models import User, Item, Branch
+from datetime import datetime
 
 # Transactions-
 
@@ -16,7 +16,7 @@ class Transaction(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     quantity: Mapped[int] = mapped_column(nullable=False)
     description: Mapped[Optional[str]] = mapped_column()
-    created_at: Mapped[DateTime] = mapped_column(default=func.now())
+    created_at: Mapped[datetime] = mapped_column(default=func.now())
 
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), nullable=False)
     user: Mapped['User'] = relationship("User", back_populates="transactions")

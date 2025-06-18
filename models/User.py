@@ -2,7 +2,6 @@ from sqlalchemy import ForeignKey
 from data.ORMSetup import Base
 from sqlalchemy.orm import validates, relationship, Mapped, mapped_column
 from typing import List
-from models import Branch, Transaction
 
 USER_ROLES = ['admin', 'manager', 'employee']
 
@@ -17,11 +16,13 @@ class User(Base):
     role: Mapped[str] = mapped_column(nullable=False)
 
     branch_id: Mapped[int] = mapped_column(ForeignKey('branches.id'), nullable=False)
-    branch: Mapped['Branch'] = relationship('Branch', back_populates="users")
+    branch: Mapped['Branch'] = relationship('Branch', back_populates="users", foreign_keys=[branch_id])
 
-    managed_branches: Mapped[List['Branch']] = relationship('Branch', back_populates='manager')
+    managed_branches: Mapped[List['Branch']] = relationship('Branch', back_populates='manager', foreign_keys='Branch.manager_id')
 
     transactions: Mapped[List['Transaction']] = relationship('Transaction', back_populates='user')
+
+    orders: Mapped[List['Order']] = relationship("Order", back_populates='user')
     
     @validates('first_name', 'last_name')
     def validate_name(self, key, value):
