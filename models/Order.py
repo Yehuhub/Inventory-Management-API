@@ -23,6 +23,7 @@ class Order(Base):
     user: Mapped["User"] = relationship(back_populates="orders")
     items: Mapped[List["OrderItem"]] = relationship(back_populates="order", cascade="all, delete-orphan")
 
+
     @validates("status")
     def validate_status(self, key, value: str) -> str:
         if value not in STATUS:
