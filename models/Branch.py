@@ -1,24 +1,27 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from data.ORMSetup import Base
-from sqlalchemy.orm import validates, relationship
+from sqlalchemy.orm import validates, relationship, Mapped, mapped_column
+from models import User, ItemStock, Transaction
+from typing import List, Optional
 
 class Branch(Base):
     __tablename__ = 'branches'
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
-    address = Column(String, nullable=False)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(nullable=False)
+    address: Mapped[str] = mapped_column(nullable=False)
 
-    manager_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-    manager = relationship('User', back_populates="managed_branches")
+    phone_number: Mapped[str] = mapped_column(unique=True, nullable=False)
 
-    phone_number = Column(String, unique=True, nullable=False)
+    # manager has to be optional since branch can be created first, and so it doesnt have a manager at first
+    manager_id: Mapped[Optional[int]] = mapped_column(ForeignKey('users.id'), nullable=True)
+    manager: Mapped[Optional['User']] = relationship('User', back_populates="managed_branches")
 
-    item_stocks = relationship("ItemStock", back_populates="branch")
+    item_stocks: Mapped[List['ItemStock']] = relationship("ItemStock", back_populates="branch")
 
-    transactions = relationship('Transaction', back_populates='branch')
+    transactions: Mapped[List['Transaction']] = relationship('Transaction', back_populates='branch')
 
-    users = relationship("User", back_populates="branch")
+    users: Mapped[List['User']] = relationship("User", back_populates="branch")
 
     @validates('name')
     def validate_name(self, key, value):
