@@ -3,6 +3,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship, validates
 from data.ORMSetup import Base
 from datetime import datetime
 from typing import List
+from models import Order
 
 
 class Client(Base):
