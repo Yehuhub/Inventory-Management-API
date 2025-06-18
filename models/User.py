@@ -20,7 +20,8 @@ class User(Base):
     managed_branches = relationship('Branch', back_populates='manager')
 
     transactions = relationship('Transaction', back_populates='user')
-    
+    orders: Mapped[List["Order"]] = relationship(back_populates="user")
+
     @validates('first_name', 'last_name')
     def validate_name(self, key, value):
         if not value.isalpha():
