@@ -21,6 +21,8 @@ class Item(Base):
     item_stocks = relationship("ItemStock", back_populates="item")
 
     transactions = relationship('Transaction', back_populates='item')
+    order_items: Mapped[List["OrderItem"]] = relationship(back_populates="item")
+    prices: Mapped[List["Price"]] = relationship(back_populates="item")
 
     @validates('name')
     def validate_name(self, key, value):
