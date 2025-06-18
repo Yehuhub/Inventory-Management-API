@@ -12,7 +12,7 @@ class Order(Base):
     __tablename__ = 'orders'
 
     id = Column(Integer, primary_key=True)
-    #client_id = Column(Integer, ForeignKey('clients.id'), nullable=False)
+    client_id = Column(Integer, ForeignKey('clients.id'), nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     status = Column(String, nullable=False, default='pending')
     delivery_date = Column(Date, nullable=False)
@@ -20,7 +20,6 @@ class Order(Base):
     updatedAt = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
 
-    # Relationships
     #client = relationship("Client", back_populates="orders")
     user = relationship("User", back_populates="orders")
 
