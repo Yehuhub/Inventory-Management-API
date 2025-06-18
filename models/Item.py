@@ -2,7 +2,7 @@ from sqlalchemy import ForeignKey, DateTime, func
 from data.ORMSetup import Base
 from sqlalchemy.orm import validates, relationship, Mapped, mapped_column
 from typing import List, Optional
-from models import Category, ItemStock, Transaction
+from models import Category, ItemStock, Transaction, OrderItem, Price
 
 class Item(Base):
     __tablename__ = 'items'
