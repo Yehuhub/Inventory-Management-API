@@ -1,4 +1,4 @@
-
+from sqlalchemy import select
 
 class BaseRepository:
     def __init__(self, db, model):
@@ -8,14 +8,9 @@ class BaseRepository:
     def get_by_id(self, obj_id):
         return self.db.query(self.model).get(obj_id)
 
-    # apparantly this is how it should be done
-    # def list_all(self):
-    #     stmt = select(self.model)
-    #     return self.db.execute(stmt).scalars().all()
-
-    # apparantly that syntax with query is deprecated
     def list_all(self):
-        return self.db.query(self.model).all()
+        stmt = select(self.model)
+        return self.db.execute(stmt).scalars().all()
 
     def create(self, obj):
         self.db.add(obj)
