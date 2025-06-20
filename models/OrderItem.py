@@ -15,7 +15,7 @@ class OrderItem(Base):
     item: Mapped["Item"] = relationship(back_populates="order_items")
 
 @validates('quantity')
-    def validate_quantity(self, key, value: int) -> int:
-        if not isinstance(value, int) or value <= 0:
-            raise ValueError("Quantity must be a positive integer.")
-        return value
+def validate_quantity(self, key, value: int) -> int:
+    if not isinstance(value, int) or value <= 0:
+        raise ValueError("Quantity must be a positive integer.")
+    return value
