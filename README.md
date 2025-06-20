@@ -51,3 +51,7 @@ ID | address | name | phone | createdAt
 Price -
 
 ID | item_id | quantity(min quantity for the price) | price | updatedAt
+
+---
+
+- think about cascading options

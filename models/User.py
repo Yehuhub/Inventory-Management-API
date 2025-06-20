@@ -1,27 +1,29 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import ForeignKey
 from data.ORMSetup import Base
-from sqlalchemy.orm import validates, relationship
+from sqlalchemy.orm import validates, relationship, Mapped, mapped_column
+from typing import List
 
 USER_ROLES = ['admin', 'manager', 'employee']
 
 class User(Base):
     __tablename__ = 'users'
 
-    id = Column(Integer, primary_key=True)
-    first_name = Column(String, nullable=False)
-    last_name = Column(String, nullable=False)
-    phone_number = Column(String, unique=True, nullable=False)
-    password = Column(String, nullable=False) # hashed at the service layer
-    role = Column(String, nullable=False)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    first_name: Mapped[str] = mapped_column(nullable=False)
+    last_name: Mapped[str] = mapped_column(nullable=False)
+    phone_number: Mapped[str] = mapped_column(unique=True, nullable=False)
+    password: Mapped[str] = mapped_column(nullable=False)
+    role: Mapped[str] = mapped_column(nullable=False)
 
-    branch_id = Column(Integer, ForeignKey('branches.id'), nullable=False)
-    branch = relationship('Branch', back_populates="users")
+    branch_id: Mapped[int] = mapped_column(ForeignKey('branches.id'), nullable=False)
+    branch: Mapped['Branch'] = relationship('Branch', back_populates="users", foreign_keys=[branch_id])
 
-    managed_branches = relationship('Branch', back_populates='manager')
+    managed_branches: Mapped[List['Branch']] = relationship('Branch', back_populates='manager', foreign_keys='Branch.manager_id')
 
-    transactions = relationship('Transaction', back_populates='user')
-    orders: Mapped[List["Order"]] = relationship(back_populates="user")
+    transactions: Mapped[List['Transaction']] = relationship('Transaction', back_populates='user')
 
+    orders: Mapped[List['Order']] = relationship("Order", back_populates='user')
+    
     @validates('first_name', 'last_name')
     def validate_name(self, key, value):
         if not value.isalpha():

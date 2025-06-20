@@ -1,27 +1,27 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, func
+from sqlalchemy import ForeignKey, DateTime, func
 from data.ORMSetup import Base
-from sqlalchemy.orm import validates, relationship
+from sqlalchemy.orm import validates, relationship, Mapped, mapped_column
+from typing import List, Optional
+from datetime import datetime
 
-# Item-
-
-# ID | name | category | description | image | createdAt
 
 class Item(Base):
     __tablename__ = 'items'
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
-    description = Column(String)
-    created_at = Column(DateTime, default=func.now())
-    #image
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(nullable=False)
+    description: Mapped[Optional[str]] = mapped_column()
+    created_at: Mapped[datetime] = mapped_column(default=func.now())
     
-    category_id = Column(Integer, ForeignKey('categories.id'), nullable=False)
-    category = relationship("Category", back_populates="items")
+    category_id: Mapped[int] = mapped_column(ForeignKey('categories.id'), nullable=False)
+    category: Mapped['Category'] = relationship("Category", back_populates="items")
 
-    item_stocks = relationship("ItemStock", back_populates="item")
+    item_stocks: Mapped[List['ItemStock']] = relationship("ItemStock", back_populates="item")
 
-    transactions = relationship('Transaction', back_populates='item')
+    transactions: Mapped[List['Transaction']] = relationship("Transaction", back_populates="item")
+
     order_items: Mapped[List["OrderItem"]] = relationship(back_populates="item")
+    
     prices: Mapped[List["Price"]] = relationship(back_populates="item")
 
     @validates('name')
