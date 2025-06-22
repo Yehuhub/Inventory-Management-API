@@ -9,4 +9,7 @@ Base = declarative_base()
 
 # Session factory
 Session = sessionmaker(bind=engine)
-session = Session()
+
+def get_db():
+    return Session()
+
