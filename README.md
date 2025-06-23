@@ -1,57 +1,45 @@
 # Inventory-Management-API
 
-inventory management
+========USER=========
 
-tables-
-users  
-branches  
-items  
-item_stock  
-transactions(tracks who takes what from where)  
-orders from other branches  
-orders  
-discounts_per_quantity
+- get: by_id, all
+- post: create
+- delete: delete_by_id
+- patch: update by some paramaters
+- put: update by all paramaters
 
-User-
+========Branch=========
 
-ID | first_name | last_name | phone_number | branch_id | password | role(admin, manager, employee)
+- get: by_id, all, manager, transactions, all items in stock, users
+- post: create
+- delete: delete_by_id
+- patch: remove manager, assign manager
 
-Branch-
+========Category=========
 
-ID | name | address | manager_id | phone_number
+- get: all
+- post: create
+- delete: by id, by name
 
-Item-
+========Client=========
 
-ID | name | category | description | image | createdAt
+- get: by_id, all, orders_by_cliend_it, by phone, by full name
+- post: create
+- patch: update some parameters
 
-Category-
+========Item=========
 
-ID | name
+- get: by_id, all, stocks, price by id and amount, all prices by id
+- post: create
+- patch: update(for updating quantity in stock, prices)
 
-Item_stock -
+========Order=========
 
-ID | branch_id | item_id | quantity | updatedAt
+- get: by_id, all, by date, by status, by user, by client, get order_items, price(need to add to db)
+- post: create(create order items list, calculate price for all orderitem, create order with orderitems and sum prices into order price)
+- patch: change_status
 
-Transactions-
+========Transaction=========
 
-ID | user_id | item_id | branch_id | type(send/receive/transfer?) | quantity | description | createdAt
-
-Orders-
-
-ID | client_id | user_id | status | delivery_date | createdAt | updatedAt
-
-Order_Items -
-
-ID | order_id | item_id | quantity
-
-Client-
-
-ID | address | name | phone | createdAt
-
-Price -
-
-ID | item_id | quantity(min quantity for the price) | price | updatedAt
-
----
-
-- think about cascading options
+- get: by_id, all, by date, by status, by user, by branch
+- post: create(sending transactions will remove from stock, receiving transaction will add to stock)

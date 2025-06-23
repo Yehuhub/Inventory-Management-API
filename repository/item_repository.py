@@ -19,17 +19,7 @@ class ItemRepository(BaseRepository):
         item = self.db.execute(stmt).scalars().first()
         return item.item_stocks if item else None
     
-    # Retrieves transactions associated with an item by item ID
-    def get_transactions_by_item_id(self, item_id):
-        stmt = select(Item).where(Item.id == item_id).options(selectinload(Item.transactions))
-        item = self.db.execute(stmt).scalars().first()
-        return item.transactions if item else None
     
-    # Retrieves order items associated with an item by item ID
-    def get_order_items_by_item_id(self, item_id):
-        stmt = select(Item).where(Item.id == item_id).options(selectinload(Item.order_items))
-        item = self.db.execute(stmt).scalars().first()
-        return item.order_items if item else None
     
     # Retrieves prices associated with an item by item ID
     def get_prices_by_item_id(self, item_id):
