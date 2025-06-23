@@ -45,3 +45,6 @@
 - post: create(sending transactions will remove from stock, receiving transaction will add to stock)
 
 !!!!!At least one complex endpoint (e.g., advanced search, reports, statistics)[need to ask sean]!!!!
+
+yehu - item, order, transaction
+lara - user branch, category, client
