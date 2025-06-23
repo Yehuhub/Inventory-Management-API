@@ -4,7 +4,6 @@ from repository.user_repository import UserRepository
 from werkzeug.exceptions import NotFound, BadRequest
 from sqlalchemy.exc import SQLAlchemyError
 
-
 def get_branch_by_id(db, branch_id):
     branch_repository = BranchRepository(db)
     branch = branch_repository.get_by_id(branch_id)
