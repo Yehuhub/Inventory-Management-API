@@ -24,3 +24,4 @@ class BranchRepository(BaseRepository):
         stmt = select(Branch).where(Branch.id == branch_id).options(selectinload(Branch.transactions))
         branch = self.db.execute(stmt).scalars().first()
         return branch.transactions if branch else None
+    

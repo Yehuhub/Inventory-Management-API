@@ -57,4 +57,6 @@ def get_orders_by_user_id(db, user_id):
     user = repo.get_by_id(user_id)
     if not user:
         raise NotFound("User not found")
-    return user.orders if user.orders else NotFound("No orders found for this user")
+    if not user.orders:
+        raise NotFound("No orders found for this user")
+    return user.orders
