@@ -4,15 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ee23d183-ae17-4fb7-9145-4731eda78f59" name="Changes" comment="change the sintax">
-      <change afterPath="$PROJECT_DIR$/repository/order_item_repository.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repository/price_repository.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repository/transaction_repository.py" afterDir="false" />
+    <list default="true" id="ee23d183-ae17-4fb7-9145-4731eda78f59" name="Changes" comment="order, order_item, price, transaction,client repositories">
+      <change afterPath="$PROJECT_DIR$/sevice/client_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sevice/order_item_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sevice/order_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sevice/price_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sevice/transaction_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/OrderItem.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/OrderItem.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repositories/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/repository/client_repository.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repositories/base_repository.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/repositories/order_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/repository/order_repository.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,13 +99,22 @@
       <option name="project" value="LOCAL" />
       <updated>1750002208800</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="order, order_item, price, transaction,client repositories">
+      <option name="closed" value="true" />
+      <created>1750416238493</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1750416238494</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add orders, order_items, client, price tables" />
     <MESSAGE value="merge with lara" />
     <MESSAGE value="change the sintax" />
-    <option name="LAST_COMMIT_MESSAGE" value="change the sintax" />
+    <MESSAGE value="order, order_item, price, transaction,client repositories" />
+    <option name="LAST_COMMIT_MESSAGE" value="order, order_item, price, transaction,client repositories" />
   </component>
 </project>
