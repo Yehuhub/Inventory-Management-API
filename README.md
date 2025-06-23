@@ -43,3 +43,5 @@
 
 - get: by_id, all, by date, by status, by user, by branch
 - post: create(sending transactions will remove from stock, receiving transaction will add to stock)
+
+!!!!!At least one complex endpoint (e.g., advanced search, reports, statistics)[need to ask sean]!!!!
