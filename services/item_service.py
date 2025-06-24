@@ -1,4 +1,5 @@
 from repository.item_repository import ItemRepository
+from repository.price_repository import PriceRepository
 from werkzeug.exceptions import NotFound, BadRequest
 
 def get_item_by_id(db, item_id):
@@ -56,3 +57,10 @@ def get_item_price_by_id_and_amount(db, item_id, amount):
     if price is None:
         raise NotFound("Price not found for this item and amount")
     return price
+
+def get_item_prices_by_id(db, item_id):
+    price_repo = PriceRepository(db)
+    prices = price_repo.get_prices_by_item_id(item_id)
+    if not prices:
+        raise NotFound("Prices not found for this item")
+    return prices

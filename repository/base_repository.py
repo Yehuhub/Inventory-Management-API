@@ -13,19 +13,27 @@ class BaseRepository:
         return self.db.execute(stmt).scalars().all()
 
     def create(self, obj):
-        self.db.add(obj)
-        self.db.commit()
-        self.db.refresh(obj)
-        return obj
+        try:
+            self.db.add(obj)
+            self.db.commit()
+            self.db.refresh(obj)
+            return obj
+        except Exception as e:
+            self.db.rollback()
+            raise e
 
     def delete(self, obj):
         self.db.delete(obj)
         self.db.commit()
 
     def update(self, obj, updates: dict):
-        for key, value in updates.items():
-            if hasattr(obj, key):
-                setattr(obj, key, value)
-        self.db.commit()
-        self.db.refresh(obj)
-        return obj
+        try:
+            for key, value in updates.items():
+                if hasattr(obj, key):
+                    setattr(obj, key, value)
+            self.db.commit()
+            self.db.refresh(obj)
+            return obj
+        except Exception as e:
+            self.db.rollback()
+            raise e

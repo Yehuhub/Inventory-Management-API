@@ -1,10 +1,15 @@
-from sqlalchemy import DateTime, ForeignKey, Float, Integer
+from sqlalchemy import DateTime, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship, validates
 from data.ORMSetup import Base
 from datetime import datetime
 
 class Price(Base):
     __tablename__ = 'prices'
+
+    # item cannot appear twice with same quantity
+    __table_args__ = (
+        UniqueConstraint('min_quantity', 'item_id', name='uq_item_branch'),
+    )
 
     id: Mapped[int] = mapped_column(primary_key=True)
     item_id: Mapped[int] = mapped_column(ForeignKey('items.id'), nullable=False)
@@ -25,3 +30,13 @@ class Price(Base):
         if value <= 0:
             raise ValueError("price_per_unit must be a positive number.")
         return float(value)
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "item_id": self.item_id,
+            "min_quantity": self.min_quantity,
+            "price_per_unit": self.price_per_unit,
+            "updated_at": self.updated_at.isoformat(),
+            "item_name": self.item.name
+        }

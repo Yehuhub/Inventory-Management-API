@@ -31,3 +31,4 @@ class ItemStockRepository(BaseRepository):
             ItemStock.item_id == item_id
         )
         return self.db.execute(stmt).scalars().first()
+    

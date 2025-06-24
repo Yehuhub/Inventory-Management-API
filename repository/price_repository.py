@@ -19,3 +19,7 @@ class PriceRepository(BaseRepository):
             .order_by(Price.min_quantity.desc())  # More specific (higher min_quantity) first
         )
         return self.db.execute(stmt).scalars().first()
+
+    def get_price_by_item_id_and_min_quantity(self, item_id: int, min_quantity: int):
+        stmt = select(Price).where(Price.item_id == item_id, Price.min_quantity == min_quantity)
+        return self.db.execute(stmt).scalars.first()

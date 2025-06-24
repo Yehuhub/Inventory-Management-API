@@ -10,27 +10,34 @@ def update_item_stock(db, item_stock_id, updates):
         raise BadRequest("No updates provided")
     return repo.update(item_stock, updates)
 
-def get_item_by_id(db, item_id):
+def get_item_stock_by_id(db, item_stock_id):
     repo = ItemStockRepository(db)
-    item_stock = repo.get_by_id(item_id)
+    item_stock = repo.get_by_id(item_stock_id)
     if not item_stock:
-        raise NotFound("Item not found")
+        raise NotFound("Item stock not found")
     return item_stock
 
-def get_all_items(db):
+def get_all_items_stock(db):
     repo = ItemStockRepository(db)
-    item_stock = repo.list_all()
-    if not item_stock:
-        raise NotFound("No items found")
-    return item_stock
+    item_stocks = repo.list_all()
+    if not item_stocks:
+        raise NotFound("No stock found")
+    return item_stocks
 
-def create_item(db, new_item):
+def create_item_stock(db, new_item_stock):
     repo = ItemStockRepository(db)
-    return repo.create(new_item)
+    return repo.create(new_item_stock)
 
-def delete_item(db, item_id):
+def delete_item_stock(db, item_stock_id):
     repo = ItemStockRepository(db)
-    item_stock = repo.get_by_id(item_id)
+    item_stock = repo.get_by_id(item_stock_id)
     if not item_stock:
-        raise NotFound("Item not found")
+        raise NotFound("Item stock not found")
     repo.delete(item_stock)
+
+def get_item_stock_by_branch_and_item(db, branch_id, item_stock_id):
+    repo = ItemStockRepository(db)
+    item_stock = repo.get_item_stock_by_branch_and_item_id(branch_id, item_stock_id)
+    if not item_stock:
+        raise NotFound("Stock not found for the item and branch")
+    return item_stock

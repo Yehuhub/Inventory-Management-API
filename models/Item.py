@@ -5,6 +5,7 @@ from typing import List, Optional
 from datetime import datetime
 
 
+
 class Item(Base):
     __tablename__ = 'items'
 
@@ -29,4 +30,13 @@ class Item(Base):
         if not value.isalpha():
             raise ValueError("Names can only contain letters")
         return value
-        
+    
+    def to_dict(self):
+        return{
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "category_id": self.category_id,
+            "category": self.category.name,
+            "created_at": self.created_at.isoformat(),
+        }
