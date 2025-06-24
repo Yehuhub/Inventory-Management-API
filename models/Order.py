@@ -35,3 +35,14 @@ class Order(Base):
         if value is None:
             raise ValueError("Delivery date cannot be null.")
         return value
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "client_id": self.client_id,
+            "user_id": self.user_id,
+            "status": self.status,
+            "delivery_date": self.delivery_date, #might need isoformat
+            "created_at": self.createdAt.isoformat(),
+            "updated_at": self.updatedAt.isoformat()
+        }

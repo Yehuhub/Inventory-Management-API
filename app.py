@@ -7,6 +7,7 @@ from data.ORMSetup import engine, Base
 from werkzeug.exceptions import HTTPException
 from sqlalchemy.exc import SQLAlchemyError
 from routes.item_route import item_router
+from routes.order_route import order_router
 
 Base.metadata.create_all(engine)
 
@@ -44,8 +45,10 @@ def close_db_session(exception=None):
     if db is not None:
         db.close() 
 
-#==================Setup blueprints==================#
+#==================Setup router blueprints==================#
+
 app.register_blueprint(item_router, url_prefix="/items")
+app.register_blueprint(order_router, url_prefix="/orders")
 
 
 if __name__ == "__main__":

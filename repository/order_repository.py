@@ -1,7 +1,8 @@
 from repository.base_repository import BaseRepository
 from models import Order
-from sqlalchemy import select
+from sqlalchemy import select, column
 from datetime import date
+
 
 class OrderRepository(BaseRepository):
     def __init__(self, db):
@@ -32,3 +33,26 @@ class OrderRepository(BaseRepository):
         stmt = select(Order).where(Order.id == order_id)
         result = self.db.execute(stmt).scalars().first()
         return result.items if result else None
+
+    # Get orders between specified dates
+    def get_orders_in_range(self, start_date = None, end_date = None, date_field="createdAt"):
+        if date_field not in ["createdAt", "updatedAt"]:
+            raise ValueError("Invalid date field. Use 'createdAt' or 'updatedAt'.")
+
+        stmt = None
+        order_date = getattr(Order, date_field)
+
+        if start_date and end_date:
+            stmt = select(Order).where(
+                order_date >= start_date,
+                order_date <= end_date
+                )
+        elif start_date:
+            stmt = select(Order).where(order_date >= start_date)
+        elif end_date:
+            stmt = select(Order).where(order_date <= end_date)
+        else:
+            return self.list_all()
+        
+        return self.db.execute(stmt).scalars().all()
+        

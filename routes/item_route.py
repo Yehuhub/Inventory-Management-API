@@ -1,6 +1,5 @@
-from flask import Flask, Blueprint, request, jsonify, g
+from flask import Blueprint, request, jsonify, g
 from http import HTTPStatus
-from sqlalchemy.exc import IntegrityError
 from services.item_service import get_all_items, get_item_by_id, get_item_price_by_id_and_amount, create_item, get_item_prices_by_id, get_item_stocks_by_item_id
 from services.branch_service import get_branch_by_id
 from services.item_stock_service import get_item_stock_by_branch_and_item, update_item_stock

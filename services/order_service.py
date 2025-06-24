@@ -1,5 +1,5 @@
 from repository.order_repository import OrderRepository
-from werkzeug.exceptions import NotFound, InternalServerError
+from werkzeug.exceptions import NotFound, InternalServerError, BadRequest
 from datetime import date
 
 def get_order_by_id(db, order_id: int):
@@ -70,3 +70,13 @@ def get_order_items(db, order_id: int):
     if not items:
         raise NotFound(f"No items found for order_id={order_id}")
     return items
+
+def get_orders_between_dates(db, start_date = None, end_date = None, date_field="createdAt"):
+    order_repository = OrderRepository(db)
+    try:
+        orders = order_repository.get_orders_in_range(start_date, end_date, date_field)
+    except ValueError :
+        raise BadRequest("Invalid date_field. Use 'createdAt' or 'updatedAt'.")
+    if not orders:
+        raise NotFound("Could not find orders between the specified dates")
+    return orders
