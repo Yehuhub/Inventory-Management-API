@@ -1,11 +1,11 @@
 from flask import Blueprint, request, jsonify, g
 from http import HTTPStatus
 from werkzeug.exceptions import BadRequest
-from services.order_service import get_order_by_id, get_orders_with_filters, get_order_items, create_order
+from services.order_service import get_order_by_id, get_orders_with_filters, get_order_items, create_order, update_order
 from services.user_service import get_orders_by_user_id
 from services.client_service import get_orders_of_client
 from datetime import datetime
-
+from models.Order import ORDER_STATUS
 
 order_router = Blueprint("order_router", __name__)
 
@@ -104,3 +104,52 @@ def create_a_new_order():
     })
 
     return jsonify(order.to_dict()), HTTPStatus.CREATED
+
+#==========PATCH METHODS==========#
+
+# for updating order status
+@order_router.patch("/status/<int:order_id>")
+def patch_order_status(order_id):
+    db = g.db
+    data = request.get_json()
+
+    new_status = data.get("status")
+
+    if not new_status or not isinstance(new_status, str) :
+        raise BadRequest(f"invalid status provided: {new_status}")
+
+    new_status = new_status.lower()
+    if new_status not in ORDER_STATUS:
+        raise BadRequest(f"invalid status provided: {new_status}")
+    
+    updates = {
+        "status": new_status
+    }
+
+    order = update_order(db, order_id, updates)
+    return jsonify(order.to_dict()), HTTPStatus.OK
+
+# for updating delivery date
+@order_router.patch("/delivery-date/<int:order_id>")
+def patch_delivery_date(order_id):
+    db = g.db
+    data = request.get_json()
+
+    new_delivery_date = data.get("delivery_date")
+
+    date_format = "%d-%m-%Y"
+
+    if not new_delivery_date:
+        raise BadRequest("Must provide a delivery date")
+    
+    try:
+        new_date = datetime.strptime(new_delivery_date, date_format).date()
+    except ValueError as e:
+        raise BadRequest("Invalid date format")
+    
+    updates = {
+        "delivery_date": new_date
+    }
+
+    order = update_order(db, order_id, updates)
+    return jsonify(order.to_dict()), HTTPStatus.OK

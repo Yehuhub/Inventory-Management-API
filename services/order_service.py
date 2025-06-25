@@ -1,6 +1,6 @@
 from repository.order_repository import OrderRepository
 from repository.order_item_repository import OrderItemRepository
-from werkzeug.exceptions import NotFound, BadRequest
+from werkzeug.exceptions import NotFound, BadRequest, InternalServerError
 from services.item_service import get_item_price_by_id_and_amount, get_item_by_id
 from services.order_item_service import create_order_item
 from services.user_service import get_user_by_id
