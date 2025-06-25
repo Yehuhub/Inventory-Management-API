@@ -48,3 +48,16 @@
 
 yehu - √item, order, transaction
 lara - user branch, category, client
+
+--------order request format------------
+{
+"order_items":[
+{"item_id": 1, "quantity": 3},
+{"item_id": 5, "quantity": 20},
+{"item_id": 4, "quantity": 11},
+],
+"user_id": 5,
+"client_id": 1,
+
+}
+delivery date and status will be defaulted, status to pending and delivery_date to today+14 days

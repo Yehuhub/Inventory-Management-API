@@ -1,11 +1,11 @@
-from sqlalchemy import String, Integer, Date, DateTime, ForeignKey
+from sqlalchemy import String, Numeric, Date, DateTime, ForeignKey
 from sqlalchemy.orm import Mapped,mapped_column, relationship, validates
 from datetime import datetime
 from data.ORMSetup import Base
 from typing import Optional, List
 import enum
 
-STATUS = ['pending', 'delivered']
+ORDER_STATUS = ['pending', 'delivered']
 
 
 class Order(Base):
@@ -18,6 +18,7 @@ class Order(Base):
     delivery_date: Mapped[datetime.date] = mapped_column(Date, nullable=False)
     createdAt: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
     updatedAt: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+    total_price: Mapped[float] = mapped_column(nullable=False, default=0.0)
 
     client: Mapped["Client"] = relationship(back_populates="orders")
     user: Mapped["User"] = relationship(back_populates="orders")
@@ -26,8 +27,8 @@ class Order(Base):
 
     @validates("status")
     def validate_status(self, key, value: str) -> str:
-        if value not in STATUS:
-            raise ValueError(f"Invalid status '{value}'. Must be one of {STATUS}.")
+        if value not in ORDER_STATUS:
+            raise ValueError(f"Invalid status '{value}'. Must be one of {ORDER_STATUS}.")
         return value
 
     @validates("delivery_date")

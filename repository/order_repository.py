@@ -35,24 +35,24 @@ class OrderRepository(BaseRepository):
         return result.items if result else None
 
     # Get orders between specified dates
-    def get_orders_in_range(self, start_date = None, end_date = None, date_field="createdAt"):
-        if date_field not in ["createdAt", "updatedAt"]:
-            raise ValueError("Invalid date field. Use 'createdAt' or 'updatedAt'.")
+    def get_orders_with_filters(self, start_date = None, end_date = None, date_field="createdAt", status = None):
 
         stmt = None
         order_date = getattr(Order, date_field)
 
-        if start_date and end_date:
-            stmt = select(Order).where(
-                order_date >= start_date,
-                order_date <= end_date
-                )
-        elif start_date:
-            stmt = select(Order).where(order_date >= start_date)
-        elif end_date:
-            stmt = select(Order).where(order_date <= end_date)
+        filters = []
+        if start_date:
+            filters.append(order_date >= start_date)
+        if end_date:
+            filters.append(order_date <= end_date)
+        if status:
+            filters.append(Order.status == status)
+
+        if filters:
+            stmt = select(Order).where(*filters)
         else:
             return self.list_all()
         
+        stmt = stmt.order_by(order_date.desc())
         return self.db.execute(stmt).scalars().all()
         
