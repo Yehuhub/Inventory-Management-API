@@ -1,7 +1,12 @@
 from datetime import date
-
 from repository.transaction_repository import TransactionRepository
-from werkzeug.exceptions import NotFound, InternalServerError
+from services.user_service import get_user_by_id
+from services.item_service import get_item_by_id
+from services.branch_service import get_branch_by_id
+from services.item_stock_service import get_item_stock_by_branch_and_item, create_item_stock
+from werkzeug.exceptions import NotFound, InternalServerError, BadRequest
+from models.Transaction import TRANSACTION_TYPES, Transaction
+from models.ItemStock import ItemStock
 
 def get_transaction_by_id(db, transaction_id: int):
     transaction_repository = TransactionRepository(db)
@@ -15,9 +20,53 @@ def list_transactions(db):
     return transaction_repository.list_all()
 
 def create_transaction(db, transaction_data: dict):
-    transaction_repository = TransactionRepository(db)
-    transaction = transaction_repository.model(**transaction_data)
-    return transaction_repository.create(transaction)
+    try:
+        #find data to make sure it exists
+        user = get_user_by_id(transaction_data["user_id"]) 
+        branch = get_branch_by_id(transaction_data["branch_id"])
+        item = get_item_by_id(transaction_data["item_id"])
+        quantity = transaction_data["quantity"]
+
+        # get the item stock
+        stock = get_item_stock_by_branch_and_item(db, branch.id, item.id)
+
+        #make the correct operation
+        if transaction_data["transaction_type"] == 'send':
+            if not stock or stock.quantity < quantity:
+                raise BadRequest("Not enough stock availabble to complete transaction")
+            stock.quantity -= quantity
+
+        elif transaction_data["transaction_type"] == 'receive':
+            if stock:
+                stock.quantity += quantity
+            else: #if stock doesnt exists but we have this item then weh have to create it
+                stock = ItemStock(
+                    quantity=quantity,
+                    branch_id= branch.id,
+                    item_id= item.id
+                )
+                db.add(stock)
+                        
+
+        transaction = Transaction(
+            quantity=quantity,
+            transaction_type=transaction_data["transaction_type"],
+            user_id=user.id,
+            item_id=item.id,
+            branch_id=branch.id,
+            description=transaction_data["description"],
+        )
+
+        db.add(transaction)
+        db.commit()
+        db.refresh(transaction)
+        return transaction
+    except (NotFound, BadRequest)as e:
+        db.rollback()
+        raise e
+    except Exception as e:
+        db.rollback()
+        raise BadRequest(f"Could not create transaction: {str(e)}")
 
 def update_transaction(db, transaction_id: int, updates: dict):
     transaction_repository = TransactionRepository(db)
@@ -78,3 +127,9 @@ def get_transactions_by_date_and_branch(db, specific_date: date, branch_id: int)
 def get_transaction_by_date_and_item(db, specific_date: date, item_id: int):
     transaction_repository = TransactionRepository(db)
     return transaction_repository.get_transactions_by_date_and_item(specific_date, item_id)
+
+def get_transactions_with_filters(db, start_date=None, end_date=None, transaction_type=None, branch_id=None):
+    repo = TransactionRepository(db)
+
+    transactions = repo.get_transactions_with_filters(start_date, end_date, transaction_type, branch_id)
+    return transactions

@@ -46,7 +46,7 @@
 
 !!!!!At least one complex endpoint (e.g., advanced search, reports, statistics)[need to ask sean]!!!!
 
-yehu - √item, order, transaction
+yehu - √item, √order, transaction
 lara - user branch, category, client
 
 --------order request format------------

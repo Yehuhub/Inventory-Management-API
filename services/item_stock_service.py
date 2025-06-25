@@ -35,9 +35,7 @@ def delete_item_stock(db, item_stock_id):
         raise NotFound("Item stock not found")
     repo.delete(item_stock)
 
-def get_item_stock_by_branch_and_item(db, branch_id, item_stock_id):
+def get_item_stock_by_branch_and_item(db, branch_id, item_id):
     repo = ItemStockRepository(db)
-    item_stock = repo.get_item_stock_by_branch_and_item_id(branch_id, item_stock_id)
-    if not item_stock:
-        raise NotFound("Stock not found for the item and branch")
+    item_stock = repo.get_item_stock_by_branch_and_item_id(branch_id, item_id)
     return item_stock

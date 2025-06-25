@@ -63,3 +63,25 @@ class TransactionRepository(BaseRepository):
             )
         )
         return self.db.execute(stmt).scalars().all()
+
+    def get_transactions_with_filters(self, start_date = None, end_date = None, transaction_type = None, branch_id=None):
+        stmt = None
+        transaction_date = getattr(Transaction, "created_at")
+
+        filters = []
+        if start_date:
+            filters.append(transaction_date >= start_date)
+        if end_date:
+            filters.append(transaction_date <= end_date)
+        if transaction_type:
+            filters.append(Transaction.transaction_type == transaction_type)
+        if branch_id:
+            filters.append(Transaction.branch_id == branch_id)
+
+        if filters:
+            stmt = select(Transaction).where(*filters)
+        else:
+            return self.list_all()
+        
+        stmt = stmt.order_by(transaction_date.desc())
+        return self.db.execute(stmt).scalars().all

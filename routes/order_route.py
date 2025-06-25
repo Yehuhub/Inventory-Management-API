@@ -9,7 +9,7 @@ from models.Order import ORDER_STATUS
 
 order_router = Blueprint("order_router", __name__)
 
-#==========GET METHODS==========#
+#====================GET METHODS====================#
 
 # get orders, can filter by start-end dates, and if we query dates by update date or created date, and order status
 @order_router.get("/")

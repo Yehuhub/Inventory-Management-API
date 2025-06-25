@@ -9,8 +9,7 @@ from werkzeug.exceptions import BadRequest
 
 item_router = Blueprint("item_router", __name__)
 
-#==========GET METHODS==========#
-
+#====================GET METHODS====================#
 # return a json list of all items
 @item_router.get("/")
 def get_items_route():
@@ -75,8 +74,7 @@ def get_stock_for_item_in_branch(item_id, branch_id):
     stock = get_item_stock_by_branch_and_item(db, item_id, branch_id)
     return jsonify(stock.to_dict()), HTTPStatus.OK
 
-#==========POST METHODS==========#
-
+#====================POST METHODS====================#
 # save a new item to the db
 @item_router.post("/")
 def create_new_item():
@@ -99,7 +97,7 @@ def create_new_item():
         return jsonify({"error": str(e)}), 400
 
 
-#==========PATCH METHODS==========#
+#====================PATCH METHODS====================#
 
 # patch method for updating stock quantity
 @item_router.patch("/<int:item_id>/stock/<int:branch_id>")
