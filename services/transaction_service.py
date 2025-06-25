@@ -3,11 +3,12 @@ from repository.transaction_repository import TransactionRepository
 from services.user_service import get_user_by_id
 from services.item_service import get_item_by_id
 from services.branch_service import get_branch_by_id
-from services.item_stock_service import get_item_stock_by_branch_and_item, create_item_stock
+from services.item_stock_service import get_item_stock_by_branch_and_item
 from werkzeug.exceptions import NotFound, InternalServerError, BadRequest
 from models.Transaction import TRANSACTION_TYPES, Transaction
 from models.ItemStock import ItemStock
 
+# get specific transaction by id
 def get_transaction_by_id(db, transaction_id: int):
     transaction_repository = TransactionRepository(db)
     transaction = transaction_repository.get_by_id(transaction_id)
@@ -15,10 +16,14 @@ def get_transaction_by_id(db, transaction_id: int):
         raise NotFound("Transaction not found")
     return transaction
 
+# get all transactions
 def list_transactions(db):
     transaction_repository = TransactionRepository(db)
     return transaction_repository.list_all()
 
+
+# create transaction
+# will create item_stock if receiving an item and stock not existing for it
 def create_transaction(db, transaction_data: dict):
     try:
         #find data to make sure it exists
