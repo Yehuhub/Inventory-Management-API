@@ -12,6 +12,12 @@ class Category(Base):
 
     items: Mapped[List['Item']] = relationship("Item", back_populates="category")
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name
+        }
+
     @validates('name')
     def validate_name(self, key, value):
         if not value.isalpha():

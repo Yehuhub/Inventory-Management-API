@@ -23,7 +23,17 @@ class User(Base):
     transactions: Mapped[List['Transaction']] = relationship('Transaction', back_populates='user')
 
     orders: Mapped[List['Order']] = relationship("Order", back_populates='user')
-    
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "phone_number": self.phone_number,
+            "role": self.role,
+            "branch_id": self.branch_id
+        }
+
     @validates('first_name', 'last_name')
     def validate_name(self, key, value):
         if not value.isalpha():

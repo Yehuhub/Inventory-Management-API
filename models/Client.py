@@ -17,6 +17,16 @@ class Client(Base):
 
     orders: Mapped[List["Order"]] = relationship(back_populates="client")
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "phone_number": self.phone_number,
+            "address": self.address,
+            "createdAt": self.createdAt.isoformat()
+        }
+
     @validates('first_name', 'last_name')
     def validate_name(self, key: str, value: str) -> str:
         if not value or not value.strip():

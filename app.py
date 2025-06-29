@@ -8,6 +8,10 @@ from werkzeug.exceptions import HTTPException
 from sqlalchemy.exc import SQLAlchemyError
 from routes.item_route import item_router
 from routes.order_route import order_router
+from routes.user_route import user_router
+from routes.branch_route import branch_router
+from routes.client_route import client_router
+from routes.category_route import category_router
 
 Base.metadata.create_all(engine)
 
@@ -49,6 +53,11 @@ def close_db_session(exception=None):
 
 app.register_blueprint(item_router, url_prefix="/items")
 app.register_blueprint(order_router, url_prefix="/orders")
+app.register_blueprint(user_router, url_prefix="/users")
+app.register_blueprint(branch_router, url_prefix="/branches")
+app.register_blueprint(client_router, url_prefix="/clients")
+app.register_blueprint(category_router, url_prefix="/categories")
+
 
 
 if __name__ == "__main__":

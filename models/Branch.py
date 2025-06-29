@@ -22,6 +22,15 @@ class Branch(Base):
 
     users: Mapped[List['User']] = relationship("User", back_populates="branch", foreign_keys='User.branch_id')
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "address": self.address,
+            "phone_number": self.phone_number,
+            "manager_id": self.manager_id
+        }
+
     @validates('name')
     def validate_name(self, key, value):
         if not value.isalpha():
