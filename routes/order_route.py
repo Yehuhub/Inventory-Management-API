@@ -48,14 +48,14 @@ def get_order_by_order_id(order_id):
 
 # get an order by order_id
 @order_router.get("/user/<int:user_id>")
-def get_order_by_order_id(user_id):
+def get_orders_by_user(user_id):
     db = g.db
     orders = get_orders_by_user_id(db, user_id)
     return jsonify(order.to_dict() for order in orders), HTTPStatus.OK
 
 # get all orders for client
 @order_router.get("/client/<int:client_id>")
-def get_order_by_order_id(client_id):
+def get_order_by_client(client_id):
     db = g.db
     orders = get_orders_of_client(db, client_id)
     return jsonify(order.to_dict() for order in orders), HTTPStatus.OK
