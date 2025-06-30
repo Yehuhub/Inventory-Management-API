@@ -1,18 +1,18 @@
 # Inventory-Management-API
 
-==================================IMPROVEMENTS THAT CAN BE MADE===================================
+==================================TODO===================================
 
     -   add SQLAlchemyError exception handling on post method to notify the reason why an object was not created
     -   ask if a router that returns a list returns an empty list or not found
+    -   ask/think about a complex endpoint
     -   make it so it reads items and categories from csv
     -   export database to excel
+    -   route testing:
+        -   yehu: users, branch, category
+        -   lara: client, item, order, transaction
 
 ==================================================================================================
 !!!!!At least one complex endpoint (e.g., advanced search, reports, statistics)[need to ask sean]!!!!
-
-yehu - √item, √order, √transaction
-lara - user branch, category, client
-
 --------order request format------------
 {
 "order_items":[
