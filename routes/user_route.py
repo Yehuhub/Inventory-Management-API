@@ -38,9 +38,10 @@ def create_new_user_route():
 
     try:
         user = User(
-            username=data["username"],
-            email=data["email"],
-            role_id=data["role_id"],
+            first_name = data["first_name"],
+            last_name = data["last_name"],
+            phone_number = data["phone_number"],
+            role=data["role"],
             branch_id=data["branch_id"]
         )
         created_user = create_user(db, user)

@@ -46,6 +46,7 @@ def get_branch_users(branch_id):
 def get_branch_transactions(branch_id):
     db = g.db
     transactions = get_transactions_by_branch_id(db, branch_id)
+
     return jsonify([transaction.to_dict() for transaction in transactions]), HTTPStatus.OK
 
 
@@ -82,9 +83,10 @@ def create_branch_route():
 
 @branch_router.delete("/<int:branch_id>")
 def delete_branch_route(branch_id):
+    print("in delete")
     db = g.db
     delete_branch(db, branch_id)
-    return jsonify({"message": f"Branch {branch_id} deleted"}), HTTPStatus.NO_CONTENT
+    return jsonify({"message": f"Branch {branch_id} deleted"}), HTTPStatus.OK
 
 
 # ====================PATCH METHODS====================#

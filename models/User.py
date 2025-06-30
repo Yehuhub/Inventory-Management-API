@@ -3,7 +3,7 @@ from data.ORMSetup import Base
 from sqlalchemy.orm import validates, relationship, Mapped, mapped_column
 from typing import List
 
-USER_ROLES = ['admin', 'manager', 'employee']
+USER_ROLES = ['manager', 'employee']
 
 class User(Base):
     __tablename__ = 'users'
@@ -12,7 +12,6 @@ class User(Base):
     first_name: Mapped[str] = mapped_column(nullable=False)
     last_name: Mapped[str] = mapped_column(nullable=False)
     phone_number: Mapped[str] = mapped_column(unique=True, nullable=False)
-    password: Mapped[str] = mapped_column(nullable=False)
     role: Mapped[str] = mapped_column(nullable=False)
 
     branch_id: Mapped[int] = mapped_column(ForeignKey('branches.id'), nullable=False)
