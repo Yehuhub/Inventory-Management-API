@@ -12,7 +12,7 @@ class ItemStock(Base):
 
     # an item and branch can appear together only once in stock
     __table_args__ = (
-        UniqueConstraint('item_id', 'branch_id', name='uq_item_branch'),
+        UniqueConstraint('item_id', 'branch_id', name='uq_item_branch_new'),
     )
 
     id: Mapped[int] = mapped_column(primary_key=True)

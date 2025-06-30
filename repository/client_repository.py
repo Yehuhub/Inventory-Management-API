@@ -1,6 +1,6 @@
 from repository.base_repository import BaseRepository
 from models import Client
-from sqlalchemy import select
+from sqlalchemy import select, func
 
 
 class ClientRepository(BaseRepository):
@@ -14,10 +14,10 @@ class ClientRepository(BaseRepository):
         return result.orders if result else None
 
     # Finds client by full name (first and last)
-    def find_by_full_name(self, first_name: str, last_name: str, func=None):
+    def find_by_full_name(self, first_name: str, last_name: str):
         stmt = select(Client).where(
-            func.lower(Client.first_name) == first_name.strip().lower(),
-            func.lower(Client.last_name) == last_name.strip().lower()
+            func.lower(Client.first_name) == first_name.lower(),
+            func.lower(Client.last_name) == last_name.lower()
         )
         return self.db.execute(stmt).scalars().first()
 

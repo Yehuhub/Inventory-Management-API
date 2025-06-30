@@ -32,11 +32,13 @@ def find_client_by_phone_route(phone):
 @client_router.get("/name")
 def find_client_by_full_name_route():
     db = g.db
-    first_name = request.args.get("first_name")
-    last_name = request.args.get("last_name")
+    first_name = request.args.get("first_name", "").strip()
+    last_name = request.args.get("last_name", "").strip()
+
     if not first_name or not last_name:
-        raise BadRequest("first_name and last_name are required")
-    client = find_client_by_full_name(db, first_name.strip(), last_name.strip())
+        raise BadRequest("first_name and last_name are required and cannot be empty.")
+
+    client = find_client_by_full_name(db, first_name, last_name)
     return jsonify(client.to_dict()), HTTPStatus.OK
 
 @client_router.get("/<int:client_id>/orders")
