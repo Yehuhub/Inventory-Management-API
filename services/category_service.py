@@ -1,5 +1,6 @@
 from repository.category_repository import CategoryRepository
 from werkzeug.exceptions import NotFound, BadRequest
+from models import Category
 
 def get_category_by_id(db, category_id):
     category_repository = CategoryRepository(db)
@@ -17,6 +18,8 @@ def get_all_categories(db):
 
 def create_category(db, new_category):
     category_repository = CategoryRepository(db)
+    if(category_repository.is_category_exists_case_insensitive(new_category.name)):
+        raise ValueError("Category already exists")
     return category_repository.create(new_category)
 
 def delete_category(db, category_id):
@@ -57,3 +60,7 @@ def get_category_by_name(db, category_name):
     if not category:
         raise NotFound(f"Category not found: {category_name}")
     return category
+
+def does_category_exists_by_name(db, category_name):
+    repo = CategoryRepository(db)
+    return repo.is_category_exists_case_insensitive(category_name)
