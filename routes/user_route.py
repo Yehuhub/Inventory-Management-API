@@ -42,7 +42,7 @@ def create_new_user_route():
             last_name = data["last_name"],
             phone_number = data["phone_number"],
             role=data["role"],
-            branch_id=data["branch_id"]
+            branch_id=data.get("branch_id")
         )
         created_user = create_user(db, user)
         return jsonify(created_user.to_dict()), HTTPStatus.CREATED
@@ -72,27 +72,4 @@ def patch_user_route(user_id):
         raise BadRequest("No update data provided")
 
     updated_user = update_user(db, user_id, data)
-    return jsonify(updated_user.to_dict()), HTTPStatus.OK
-
-#====================PUT METHODS====================#
-
-# Update all fields of a user
-@user_router.put("/<int:user_id>")
-def put_user_route(user_id):
-    db = g.db
-    data = request.get_json()
-
-    required_fields = ["username", "email", "role_id", "branch_id"]
-    for field in required_fields:
-        if field not in data:
-            raise BadRequest(f"Missing field: {field}")
-
-    updates = {
-        "username": data["username"],
-        "email": data["email"],
-        "role_id": data["role_id"],
-        "branch_id": data["branch_id"]
-    }
-
-    updated_user = update_user(db, user_id, updates)
     return jsonify(updated_user.to_dict()), HTTPStatus.OK

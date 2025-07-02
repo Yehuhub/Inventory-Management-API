@@ -8,12 +8,14 @@ from werkzeug.exceptions import HTTPException
 from sqlalchemy.exc import SQLAlchemyError
 from routes.item_route import item_router
 from routes.order_route import order_router
-from routes.transaction_route import transaction_router
 from routes.user_route import user_router
 from routes.branch_route import branch_router
 from routes.client_route import client_router
 from routes.category_route import category_router
 from routes.price_route import price_router
+from http import HTTPStatus
+from utils.csv_importer import import_from_csv
+from routes.transaction_route import transaction_router
 
 Base.metadata.create_all(engine)
 
@@ -50,6 +52,12 @@ def close_db_session(exception=None):
     db = g.pop("db", None)
     if db is not None:
         db.close() 
+
+@app.get("/csv")
+def import_csv():
+    import_from_csv()
+    return jsonify("yeah buddy"), HTTPStatus.OK
+
 
 #==================Setup router blueprints==================#
 

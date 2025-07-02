@@ -23,3 +23,7 @@ class CategoryRepository(BaseRepository):
         stmt = select(Category).where(Category.id == category_id).options(selectinload(Category.items))
         category = self.db.execute(stmt).scalars().first()
         return category.items if category else None
+
+    def is_category_exists_case_insensitive(self, category_name) -> bool:
+        return self.db.query(
+            self.db.query(Category).filter(Category.name.ilike(category_name)).exists()).scalar()

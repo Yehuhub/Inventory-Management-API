@@ -1,7 +1,7 @@
 from sqlalchemy import ForeignKey
 from data.ORMSetup import Base
 from sqlalchemy.orm import validates, relationship, Mapped, mapped_column
-from typing import List
+from typing import List, Optional
 
 USER_ROLES = ['manager', 'employee']
 
@@ -14,7 +14,7 @@ class User(Base):
     phone_number: Mapped[str] = mapped_column(unique=True, nullable=False)
     role: Mapped[str] = mapped_column(nullable=False)
 
-    branch_id: Mapped[int] = mapped_column(ForeignKey('branches.id'), nullable=False)
+    branch_id: Mapped[Optional[int]] = mapped_column(ForeignKey('branches.id'), nullable=True)
     branch: Mapped['Branch'] = relationship('Branch', back_populates="users", foreign_keys=[branch_id])
 
     managed_branches: Mapped[List['Branch']] = relationship('Branch', back_populates='manager', foreign_keys='Branch.manager_id')
@@ -43,4 +43,12 @@ class User(Base):
     def validate_role(self, key, value):
         if value not in USER_ROLES:
             raise ValueError("Invalid user role")
+        return value
+    
+    @validates('branch_id')
+    def validate_employee_branch(self, key, value):
+        print(f"role: {self.role}, value: {value}")
+        if self.role == 'employee' and value is None:
+            print("in if!")
+            raise ValueError("Employees must have a branch")
         return value

@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify, g
 from http import HTTPStatus
 from werkzeug.exceptions import BadRequest
 from services.category_service import (
-    get_all_categories, create_category, delete_category,
+    get_all_categories, create_category, get_items_by_category_id, get_items_by_category_name,
     get_category_by_name, delete_category as delete_category_by_id
 )
 from models import Category
@@ -16,6 +16,18 @@ def get_all_categories_route():
     db = g.db
     categories = get_all_categories(db)
     return jsonify([cat.to_dict() for cat in categories]), HTTPStatus.OK
+
+@category_router.get("/<int:category_id>/items")
+def get_items_by_category_id_route(category_id):
+    db = g.db
+    items = get_items_by_category_id(db, category_id)
+    return jsonify([item.to_dict() for item in items]), HTTPStatus.OK
+
+@category_router.get("/<category_name>/items")
+def get_items_by_category_name_route(category_name):
+    db = g.db
+    items = get_items_by_category_name(db, category_name)
+    return jsonify([item.to_dict() for item in items]), HTTPStatus.OK
 
 #====================POST METHODS====================#
 
