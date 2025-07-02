@@ -1,5 +1,5 @@
 from repository.price_repository import PriceRepository
-from werkzeug.exceptions import NotFound, InternalServerError
+from werkzeug.exceptions import NotFound, InternalServerError, BadRequest
 
 def get_price_by_id(db, price_id: int):
     price_repository = PriceRepository(db)
@@ -21,14 +21,14 @@ def update_price(db, price_id: int, updates: dict):
     price_repository = PriceRepository(db)
     price = price_repository.get_by_id(price_id)
     if not price:
-        raise NotFound("Price not found")
+        raise BadRequest("Price not found")
     return price_repository.update(price, updates)
 
 def delete_price(db, price_id: int):
     price_repository = PriceRepository(db)
     price = price_repository.get_by_id(price_id)
     if not price:
-        raise NotFound("Price not found")
+        raise BadRequest("Price not found")
     try:
         price_repository.delete(price)
         return price
@@ -38,15 +38,13 @@ def delete_price(db, price_id: int):
 def get_prices_by_item_id(db, item_id: int):
     price_repository = PriceRepository(db)
     prices = price_repository.get_prices_by_item_id(item_id)
-    if not prices:
-        raise NotFound(f"No prices found for item_id={item_id}")
     return prices
 
 def get_best_price_for_quantity(db, item_id: int, quantity: int):
     price_repository = PriceRepository(db)
     price = price_repository.get_best_price_for_quantity(item_id, quantity)
     if not price:
-        raise NotFound(
+        raise BadRequest(
             f"No suitable price found for item_id={item_id} and quantity={quantity}"
         )
     return price

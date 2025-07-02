@@ -3,8 +3,8 @@
 ==================================TODO===================================
 
     -   add SQLAlchemyError exception handling on post method to notify the reason why an object was not created
-    -   ask if a router that returns a list returns an empty list or not found
-    -   ask/think about a complex endpoint
+    -   need to change most of the not founds to badrequest/return an empty list
+
     -   make it so it reads items and categories from csv
     -   export database to excel
 

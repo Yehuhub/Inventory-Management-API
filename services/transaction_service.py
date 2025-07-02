@@ -13,7 +13,7 @@ def get_transaction_by_id(db, transaction_id: int):
     transaction_repository = TransactionRepository(db)
     transaction = transaction_repository.get_by_id(transaction_id)
     if not transaction:
-        raise NotFound("Transaction not found")
+        raise BadRequest("Transaction not found")
     return transaction
 
 # get all transactions
@@ -84,14 +84,14 @@ def update_transaction(db, transaction_id: int, updates: dict):
     transaction_repository = TransactionRepository(db)
     transaction = transaction_repository.get_by_id(transaction_id)
     if not transaction:
-        raise NotFound("Transaction not found")
+        raise BadRequest("Transaction not found")
     return transaction_repository.update(transaction, updates)
 
 def delete_transaction(db, transaction_id: int):
     transaction_repository = TransactionRepository(db)
     transaction = transaction_repository.get_by_id(transaction_id)
     if not transaction:
-        raise NotFound("Transaction not found")
+        raise BadRequest("Transaction not found")
     try:
         transaction_repository.delete(transaction)
         return transaction
@@ -101,32 +101,25 @@ def delete_transaction(db, transaction_id: int):
 def get_transactions_by_user_id(db, user_id: int):
     transaction_repository = TransactionRepository(db)
     transactions = transaction_repository.get_transactions_by_user_id(user_id)
-    if not transactions:
-        raise NotFound(f"No transactions found for user_id={user_id}")
     return transactions
 
 def get_transactions_by_date(db, specific_date: date):
     transaction_repository = TransactionRepository(db)
     transactions = transaction_repository.get_transactions_by_date(specific_date)
     if not transactions:
-        raise NotFound(f"No transactions found on {specific_date}")
+        raise BadRequest(f"No transactions found on {specific_date}")
     return transactions
 
 def get_transactions_by_item_id(db, item_id: int):
     transaction_repository = TransactionRepository(db)
     transactions = transaction_repository.get_transactions_by_item_id(item_id)
-    if not transactions:
-        raise NotFound(f"No transactions found for item_id= {item_id}")
     return transactions
 
 
 def get_transactions_by_branch_id(db, branch_id: int):
     transaction_repository = TransactionRepository(db)
     transactions = transaction_repository.get_transactions_by_branch_id(branch_id)
-    if not transactions:
-        raise NotFound(f"No transactions found for branch_id= {branch_id}")
     return transactions
-
 
 def get_transactions_by_date_and_user(db, specific_date: date, user_id: int):
     transaction_repository = TransactionRepository(db)
