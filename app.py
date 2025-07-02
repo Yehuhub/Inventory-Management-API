@@ -8,10 +8,12 @@ from werkzeug.exceptions import HTTPException
 from sqlalchemy.exc import SQLAlchemyError
 from routes.item_route import item_router
 from routes.order_route import order_router
+from routes.transaction_route import transaction_router
 from routes.user_route import user_router
 from routes.branch_route import branch_router
 from routes.client_route import client_router
 from routes.category_route import category_router
+from routes.price_route import price_router
 
 Base.metadata.create_all(engine)
 
@@ -57,6 +59,8 @@ app.register_blueprint(user_router, url_prefix="/users")
 app.register_blueprint(branch_router, url_prefix="/branches")
 app.register_blueprint(client_router, url_prefix="/clients")
 app.register_blueprint(category_router, url_prefix="/categories")
+app.register_blueprint(transaction_router, url_prefix="/transactions")
+app.register_blueprint(price_router, url_prefix="/prices")
 
 
 

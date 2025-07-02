@@ -48,7 +48,7 @@ def get_transactions():
         branch_id = int(branch_id)
         if branch_id < 1:
             raise BadRequest("branch_id must be a positive integer")
-        get_branch_by_id(db, branch_id) # raises NotFound if branch is not found
+        get_branch_by_id(db, branch_id)  # raises NotFound if branch is not found
 
     transactions = get_transactions_with_filters(db, start_date, end_date, transaction_type, branch_id)
 
@@ -56,18 +56,18 @@ def get_transactions():
 
 # get specific transaction by id
 @transaction_router.get("/<int:transaction_id>")
-def get_transaction(transaction_id):
+def get_transaction_by_id(transaction_id):
     db = g.db
 
-    transaction = get_transaction_by_id(transaction_id)
+    transaction = get_transaction_by_id(db, transaction_id)
     return jsonify(transaction.to_dict()), HTTPStatus.OK
 
 
 # get all transactions made by a user
 @transaction_router.get("/user/<int:user_id>")
-def get_transaction(user_id):
+def get_transaction_by_user(user_id):
     db = g.db
-    get_user_by_id(user_id) # raises not found if user_id doesnt exists
+    get_user_by_id(db, user_id)  # raises not found if user_id doesnt exists
 
     transactions = get_transactions_by_user_id(db, user_id)
     return jsonify([transaction.to_dict() for transaction in transactions])
@@ -85,7 +85,7 @@ def get_transaction(user_id):
 #     "branch_id": int
 # }
 @transaction_router.post("/")
-def create_transaction():
+def create_new_transaction():
     db = g.db
     data = request.get_json()
 
@@ -108,12 +108,12 @@ def create_transaction():
     transaction = create_transaction(
         db,
         {
-            "quantity":quantity,
-            "transaction_type":transaction_type.lower(),
-            "user_id":user_id,
-            "item_id":item_id,
-            "branch_id":branch_id,
-            "description":description
+            "quantity": quantity,
+            "transaction_type": transaction_type.lower(),
+            "user_id": user_id,
+            "item_id": item_id,
+            "branch_id": branch_id,
+            "description": description
         }
     )
 
