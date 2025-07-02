@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey, DateTime, func
+from sqlalchemy import ForeignKey, func, UniqueConstraint, Index
 from data.ORMSetup import Base
 from sqlalchemy.orm import validates, relationship, Mapped, mapped_column
 from typing import List, Optional
@@ -8,6 +8,10 @@ from datetime import datetime
 
 class Item(Base):
     __tablename__ = 'items'
+
+    __table_args__ = (
+        UniqueConstraint('name', 'category_id', name='uq_name_category'),
+    )
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(nullable=False)
@@ -40,3 +44,10 @@ class Item(Base):
             "category": self.category.name,
             "created_at": self.created_at.isoformat(),
         }
+
+Index(
+    'ix_item_name_category_lower',
+    func.lower(Item.name),
+    Item.category_id,
+    unique=True
+)

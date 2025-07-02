@@ -3,7 +3,6 @@
 ==================================TODO===================================
 
     -   add SQLAlchemyError exception handling on post method to notify the reason why an object was not created
-    -   need to change most of the not founds to badrequest/return an empty list
 
     -   make it so it reads items and categories from csv
     -   export database to excel

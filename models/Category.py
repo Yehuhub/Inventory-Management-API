@@ -1,4 +1,3 @@
-from sqlalchemy import String
 from data.ORMSetup import Base
 from sqlalchemy.orm import validates, relationship, mapped_column, Mapped
 from typing import List
