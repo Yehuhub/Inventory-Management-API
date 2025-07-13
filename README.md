@@ -7,9 +7,6 @@
     -   ask/think about a complex endpoint
     -   make it so it reads items and categories from csv
     -   export database to excel
-    -   route testing:
-        -   yehu: users, branch, category
-        -   lara: client, item, order, transaction
 
 ==================================================================================================
 !!!!!At least one complex endpoint (e.g., advanced search, reports, statistics)[need to ask sean]!!!!
