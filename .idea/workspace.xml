@@ -4,11 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ee23d183-ae17-4fb7-9145-4731eda78f59" name="Changes" comment="order, order_item, price, transaction,client repositories">
+    <list default="true" id="ee23d183-ae17-4fb7-9145-4731eda78f59" name="Changes" comment="change in client route">
+      <change afterPath="$PROJECT_DIR$/routes/price_route.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/ItemStock.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/ItemStock.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/client_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/repository/client_repository.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/client_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/routes/client_route.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/order_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/routes/order_route.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/transaction_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/routes/transaction_route.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/order_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/order_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/transaction_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/transaction_service.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -149,7 +153,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750416238494</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="change in client route">
+      <option name="closed" value="true" />
+      <created>1751305356812</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1751305356812</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -157,7 +169,8 @@
     <MESSAGE value="merge with lara" />
     <MESSAGE value="change the sintax" />
     <MESSAGE value="order, order_item, price, transaction,client repositories" />
-    <option name="LAST_COMMIT_MESSAGE" value="order, order_item, price, transaction,client repositories" />
+    <MESSAGE value="change in client route" />
+    <option name="LAST_COMMIT_MESSAGE" value="change in client route" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

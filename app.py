@@ -12,8 +12,10 @@ from routes.user_route import user_router
 from routes.branch_route import branch_router
 from routes.client_route import client_router
 from routes.category_route import category_router
+from routes.price_route import price_router
 from http import HTTPStatus
 from utils.csv_importer import import_from_csv
+from routes.transaction_route import transaction_router
 
 Base.metadata.create_all(engine)
 
@@ -65,6 +67,8 @@ app.register_blueprint(user_router, url_prefix="/api/users")
 app.register_blueprint(branch_router, url_prefix="/api/branches")
 app.register_blueprint(client_router, url_prefix="/api/clients")
 app.register_blueprint(category_router, url_prefix="/api/categories")
+app.register_blueprint(transaction_router, url_prefix="/api/transactions")
+app.register_blueprint(price_router, url_prefix="/api/prices")
 
 
 

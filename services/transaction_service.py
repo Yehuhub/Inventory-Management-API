@@ -26,47 +26,54 @@ def list_transactions(db):
 # will create item_stock if receiving an item and stock not existing for it
 def create_transaction(db, transaction_data: dict):
     try:
-        #find data to make sure it exists
-        user = get_user_by_id(transaction_data["user_id"]) 
-        branch = get_branch_by_id(transaction_data["branch_id"])
-        item = get_item_by_id(transaction_data["item_id"])
+        # Validate and retrieve related entities
+        user = get_user_by_id(db, transaction_data["user_id"])
+        branch = get_branch_by_id(db, transaction_data["branch_id"])
+        item = get_item_by_id(db, transaction_data["item_id"])
         quantity = transaction_data["quantity"]
+        transaction_type = transaction_data["transaction_type"].lower()
+        description = transaction_data.get("description", "")
 
-        # get the item stock
-        stock = get_item_stock_by_branch_and_item(db, branch.id, item.id)
+        # Get the item stock (can be None)
+        stock = get_item_stock_by_branch_and_item(db, item.id, branch.id)
 
-        #make the correct operation
-        if transaction_data["transaction_type"] == 'send':
-            if not stock or stock.quantity < quantity:
-                raise BadRequest("Not enough stock availabble to complete transaction")
+        if transaction_type == "send":
+            if not stock:
+                raise BadRequest("Stock not found for this item in the selected branch")
+            if stock.quantity < quantity:
+                raise BadRequest(f"Not enough stock to send. Available: {stock.quantity}, requested: {quantity}")
             stock.quantity -= quantity
 
-        elif transaction_data["transaction_type"] == 'receive':
+        elif transaction_type == "receive":
             if stock:
                 stock.quantity += quantity
-            else: #if stock doesnt exists but we have this item then weh have to create it
+            else:
+                # Create new stock if it doesn't exist
                 stock = ItemStock(
                     quantity=quantity,
-                    branch_id= branch.id,
-                    item_id= item.id
+                    branch_id=branch.id,
+                    item_id=item.id
                 )
                 db.add(stock)
-                        
+        else:
+            raise BadRequest("Invalid transaction type")
 
+        # Create the transaction
         transaction = Transaction(
             quantity=quantity,
-            transaction_type=transaction_data["transaction_type"],
+            transaction_type=transaction_type,
             user_id=user.id,
             item_id=item.id,
             branch_id=branch.id,
-            description=transaction_data["description"],
+            description=description
         )
 
         db.add(transaction)
         db.commit()
         db.refresh(transaction)
         return transaction
-    except (NotFound, BadRequest)as e:
+
+    except (NotFound, BadRequest) as e:
         db.rollback()
         raise e
     except Exception as e:

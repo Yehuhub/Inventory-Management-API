@@ -27,15 +27,14 @@ def list_orders(db):
 def create_order(db, order_data: dict):
 
     try:
-        user = get_user_by_id(order_data["user_id"])
-        client = get_client_by_id(order_data["client_id"])
+        user = get_user_by_id(db, order_data["user_id"])
+        client = get_client_by_id(db, order_data["client_id"])
         
         new_order = Order(
             user_id=user.id,
             client_id=client.id,
             status="pending",
             delivery_date=date.today() + timedelta(days=14),
-            price=0.0
             )
         db.add(new_order)
         db.flush()
@@ -45,9 +44,9 @@ def create_order(db, order_data: dict):
             item_id = item["item_id"]
             quantity = item["quantity"]
 
-            get_item_by_id(item_id) # will raise not found if doesnt exists
+            get_item_by_id(db, item_id) # will raise not found if doesnt exists
 
-            item_price = get_item_price_by_id_and_amount(item_id=item_id, amount=quantity)
+            item_price = get_item_price_by_id_and_amount(db, item_id=item_id, amount=quantity)
             order_item_price = round(item_price * quantity,2)
             total_price += order_item_price
 

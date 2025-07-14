@@ -9,6 +9,7 @@ def get_branch_by_id(db, branch_id):
     branch = branch_repository.get_by_id(branch_id)
     if not branch:
         raise BadRequest("Branch not found")
+        raise BadRequest("Branch not found")
     return branch
 
 def get_all_branches(db):
