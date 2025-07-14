@@ -32,10 +32,13 @@ def get_branch_by_id_route(branch_id):
 def get_branch_manager(branch_id):
     db = g.db
     manager = get_manager_by_branch_id(db, branch_id)
-    return jsonify(manager.to_dict()), HTTPStatus.OK
+    if manager:
+        return jsonify(manager.to_dict()), HTTPStatus.OK
+    else:
+        return jsonify(manager), HTTPStatus.OK 
 
 
-@branch_router.get("/<int:branch_id>/users")
+@branch_router.get("/<int:branch_id>/employees")
 def get_branch_users(branch_id):
     db = g.db
     users = get_users_by_branch_id(db, branch_id)

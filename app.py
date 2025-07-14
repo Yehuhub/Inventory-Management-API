@@ -51,7 +51,7 @@ def close_db_session(exception=None):
     if db is not None:
         db.close() 
 
-@app.get("/csv")
+@app.get("/api/csv")
 def import_csv():
     import_from_csv()
     return jsonify("yeah buddy"), HTTPStatus.OK
@@ -59,12 +59,12 @@ def import_csv():
 
 #==================Setup router blueprints==================#
 
-app.register_blueprint(item_router, url_prefix="/items")
-app.register_blueprint(order_router, url_prefix="/orders")
-app.register_blueprint(user_router, url_prefix="/users")
-app.register_blueprint(branch_router, url_prefix="/branches")
-app.register_blueprint(client_router, url_prefix="/clients")
-app.register_blueprint(category_router, url_prefix="/categories")
+app.register_blueprint(item_router, url_prefix="/api/items")
+app.register_blueprint(order_router, url_prefix="/api/orders")
+app.register_blueprint(user_router, url_prefix="/api/users")
+app.register_blueprint(branch_router, url_prefix="/api/branches")
+app.register_blueprint(client_router, url_prefix="/api/clients")
+app.register_blueprint(category_router, url_prefix="/api/categories")
 
 
 

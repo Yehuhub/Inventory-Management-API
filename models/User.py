@@ -24,13 +24,17 @@ class User(Base):
     orders: Mapped[List['Order']] = relationship("Order", back_populates='user')
 
     def to_dict(self):
+
+        managed_branches = [{"branch_id": branch.id, "branch_name": branch.name} for branch in self.managed_branches]
+
         return {
             "id": self.id,
             "first_name": self.first_name,
             "last_name": self.last_name,
             "phone_number": self.phone_number,
             "role": self.role,
-            "branch_id": self.branch_id
+            "branch_id": self.branch_id,
+            "managed_branches": managed_branches
         }
 
     @validates('first_name', 'last_name')

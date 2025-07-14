@@ -21,8 +21,6 @@ def get_manager_by_branch_id(db, branch_id):
     branch = branch_repository.get_by_id(branch_id)
     if not branch:
         raise BadRequest("Branch not found")
-    if not branch.manager:
-        raise BadRequest("No manager found for this branch")
     return branch.manager
 
 def get_users_by_branch_id(db, branch_id):
