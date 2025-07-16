@@ -1,5 +1,6 @@
 # Inventory-Management-API
 
+https://documenter.getpostman.com/view/41474192/2sB34fkfnw#07ff2027-5908-4864-ac03-10dcdeecb25a
 ==================================TODO===================================
 
     -   add SQLAlchemyError exception handling on post method to notify the reason why an object was not created
