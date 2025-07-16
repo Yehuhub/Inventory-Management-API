@@ -59,12 +59,14 @@ def get_all_item_prices(item_id):
 def get_all_item_stock(item_id):
     db = g.db
 
+    # will raise error if item doesnt exists
     item = get_item_by_id(db, item_id) 
 
     stocks = get_item_stocks_by_item_id(db, item_id)
     return jsonify([stock.to_dict() for stock in stocks]), HTTPStatus.OK
     
 
+# get the stock for a specific item in a specific branch
 @item_router.get("/<int:item_id>/stock/<int:branch_id>")
 def get_stock_for_item_in_branch(item_id, branch_id):
     db = g.db

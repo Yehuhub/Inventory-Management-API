@@ -1,21 +1,12 @@
 from flask import Flask, g, jsonify
-from models import Branch, Category, Client, Item, ItemStock, Order, OrderItem, Price, Transaction, User
-from repository.user_repository import UserRepository
-from repository.branch_repository import BranchRepository
+from models import *
 from data.ORMSetup import get_db
 from data.ORMSetup import engine, Base
 from werkzeug.exceptions import HTTPException
 from sqlalchemy.exc import SQLAlchemyError
-from routes.item_route import item_router
-from routes.order_route import order_router
-from routes.user_route import user_router
-from routes.branch_route import branch_router
-from routes.client_route import client_router
-from routes.category_route import category_router
-from routes.price_route import price_router
+from routes import *
 from http import HTTPStatus
 from utils.csv_importer import import_from_csv
-from routes.transaction_route import transaction_router
 
 Base.metadata.create_all(engine)
 

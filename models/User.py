@@ -53,6 +53,5 @@ class User(Base):
     def validate_employee_branch(self, key, value):
         print(f"role: {self.role}, value: {value}")
         if self.role == 'employee' and value is None:
-            print("in if!")
             raise ValueError("Employees must have a branch")
         return value
