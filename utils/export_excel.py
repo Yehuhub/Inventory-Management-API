@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 from flask import g
 from models import User, Branch, Client, Item, ItemStock, Category, Order, OrderItem, Price, Transaction
@@ -35,6 +37,8 @@ def export_table_to_excel(table_name):
     try:
         # Convert each model instance to a dictionary
         data = [r.to_dict() for r in rows]
+
+        os.makedirs(EXPORT_FOLDER, exist_ok=True)
 
         df = pd.DataFrame(data)
         file_path = f"{EXPORT_FOLDER}{table_name}.xlsx"
