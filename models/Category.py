@@ -19,6 +19,6 @@ class Category(Base):
 
     @validates('name')
     def validate_name(self, key, value):
-        if not value.isalpha():
+        if not all(part.isalpha() for part in value.split()):
             raise ValueError("Category name must only contain letters")
         return value

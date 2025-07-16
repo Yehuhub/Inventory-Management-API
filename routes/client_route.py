@@ -3,7 +3,7 @@ from http import HTTPStatus
 from werkzeug.exceptions import BadRequest
 from services.client_service import (
     get_client_by_id, list_clients, create_client, update_client,
-    delete_client, find_client_by_phone, find_client_by_full_name,
+    find_client_by_phone, find_client_by_full_name,
     get_orders_of_client
 )
 
