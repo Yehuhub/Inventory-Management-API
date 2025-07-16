@@ -60,6 +60,7 @@ app.register_blueprint(client_router, url_prefix="/api/clients")
 app.register_blueprint(category_router, url_prefix="/api/categories")
 app.register_blueprint(transaction_router, url_prefix="/api/transactions")
 app.register_blueprint(price_router, url_prefix="/api/prices")
+app.register_blueprint(export_router, url_prefix="/api/utils")
 
 
 
