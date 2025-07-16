@@ -21,7 +21,7 @@ Create a .env file in the root directory with the following content:
 ```bash
 DB_USER=your_username
 DB_PASSWORD=your_password
-DB_HOST=localhost
+DB_IP=localhost
 DB_PORT=5432
 DB_NAME=your_database_name
 CSV_IMPORT_FILE_PATH=path/to/your/file.csv
