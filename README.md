@@ -54,13 +54,13 @@ http://localhost:5000/
 
 ---
 
-## 📘 Postman Docs
+## 📘 API Docs
 
 You can view and test all API endpoints using the Postman documentation below:
 
 👉 [API Documentation & Tester on Postman](https://documenter.getpostman.com/view/41474192/2sB34fkfnw)
 
-This link allows you to explore all the available endpoints, see example requests and responses, and even test them directly if your server is running locally (`http://localhost:5000/`).
+This link allows you to explore all the available endpoints, see example requests and responses, and even test them directly if your server is running locally (`http://127.0.0.1:5000/`).
 
 ---
 
