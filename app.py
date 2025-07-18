@@ -6,10 +6,9 @@ from werkzeug.exceptions import HTTPException
 from sqlalchemy.exc import SQLAlchemyError
 from routes import *
 from http import HTTPStatus
-from utils.csv_importer import import_from_csv
+
 
 Base.metadata.create_all(engine)
-
 
 app = Flask(__name__)
 
@@ -32,6 +31,18 @@ def handle_db_error(e):
         "message": "An unexpected database error occurred"
     }), 500
 
+
+# fall back error handler for unexpected errors
+# functions that dont have logic to error handling fall here
+@app.errorhandler(TypeError)
+@app.errorhandler(KeyError)
+@app.errorhandler(ValueError)
+@app.errorhandler(FileNotFoundError)
+def handle_value_error(e):
+    return jsonify({
+        "error": str(e),
+    }), HTTPStatus.BAD_REQUEST
+
 # db session factory called on each request
 @app.before_request
 def create_db_session():
@@ -44,11 +55,6 @@ def close_db_session(exception=None):
     if db is not None:
         db.close() 
 
-@app.get("/api/csv")
-def import_csv():
-    import_from_csv()
-    return jsonify("yeah buddy"), HTTPStatus.OK
-
 
 #==================Setup router blueprints==================#
 
@@ -59,8 +65,7 @@ app.register_blueprint(branch_router, url_prefix="/api/branches")
 app.register_blueprint(client_router, url_prefix="/api/clients")
 app.register_blueprint(category_router, url_prefix="/api/categories")
 app.register_blueprint(transaction_router, url_prefix="/api/transactions")
-app.register_blueprint(price_router, url_prefix="/api/prices")
-app.register_blueprint(export_router, url_prefix="/api/utils")
+app.register_blueprint(export_import_router, url_prefix="/api/utils")
 
 
 

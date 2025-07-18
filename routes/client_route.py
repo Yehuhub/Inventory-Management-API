@@ -3,7 +3,7 @@ from http import HTTPStatus
 from werkzeug.exceptions import BadRequest
 from services.client_service import (
     get_client_by_id, list_clients, create_client, update_client,
-    find_client_by_phone, find_client_by_full_name,
+    find_client_by_phone, find_clients_by_full_name,
     get_orders_of_client
 )
 
@@ -38,8 +38,8 @@ def find_client_by_full_name_route():
     if not first_name or not last_name:
         raise BadRequest("first_name and last_name are required and cannot be empty.")
 
-    client = find_client_by_full_name(db, first_name, last_name)
-    return jsonify(client.to_dict()), HTTPStatus.OK
+    clients = find_clients_by_full_name(db, first_name, last_name)
+    return jsonify([client.to_dict() for client in clients]), HTTPStatus.OK
 
 @client_router.get("/<int:client_id>/orders")
 def get_orders_of_client_route(client_id):

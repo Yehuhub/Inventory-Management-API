@@ -4,5 +4,5 @@ __pycache__/
 *.pyo
 .env
 item_category.csv
-
+exported_excels
 TODO

@@ -2,7 +2,7 @@ from flask import g
 from models import Item, Category
 import csv
 from settings import CSV_IMPORT_FILE_PATH
-from services.category_service import does_category_exists_by_name, create_category, get_category_by_name
+from services.category_service import create_category, get_category_by_name
 from services.item_service import create_item
 from werkzeug.exceptions import BadRequest
 from sqlalchemy.exc import IntegrityError
@@ -10,8 +10,7 @@ from sqlalchemy.exc import IntegrityError
 # csv format:
 # item_name,item_description,category_name
 
-
-def import_from_csv():
+def import_items_categories_from_csv():
     db = g.db
     category_cache = {}
     with open(CSV_IMPORT_FILE_PATH, newline='', encoding='utf-8') as csv_file:

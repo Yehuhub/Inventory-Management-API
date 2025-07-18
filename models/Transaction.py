@@ -36,11 +36,12 @@ class Transaction(Base):
         return {
             "id": self.id,
             "quantity": self.quantity,
-            "descriptin": self.description,
+            "description": self.description,
             "created_at": self.created_at.isoformat(),
             "user_id": self.user_id,
             "user_name": self.user.first_name + ' ' + self.user.last_name,
             "item_id": self.item_id,
             "branch_id": self.branch_id,
-            "branch_name": self.branch.name
+            "branch_name": self.branch.name,
+            "transaction_type": self.transaction_type
         }

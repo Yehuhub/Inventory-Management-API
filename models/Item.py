@@ -29,11 +29,6 @@ class Item(Base):
     
     prices: Mapped[List["Price"]] = relationship(back_populates="item")
 
-    @validates('name')
-    def validate_name(self, key, value):
-        if not value.isalpha():
-            raise ValueError("Names can only contain letters")
-        return value
     
     def to_dict(self):
         return{

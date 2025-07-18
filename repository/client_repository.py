@@ -19,7 +19,7 @@ class ClientRepository(BaseRepository):
             func.lower(Client.first_name) == first_name.lower(),
             func.lower(Client.last_name) == last_name.lower()
         )
-        return self.db.execute(stmt).scalars().first()
+        return self.db.execute(stmt).scalars().all()
 
     # Finds clients by phone number (exact match)
     def find_by_phone(self, phone: str):

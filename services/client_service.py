@@ -35,7 +35,7 @@ def delete_client(db, client_id: int):
     except Exception:
         raise InternalServerError("Error deleting client")
 
-def find_client_by_full_name(db, first_name: str, last_name: str):
+def find_clients_by_full_name(db, first_name: str, last_name: str):
     client_repository = ClientRepository(db)
     client = client_repository.find_by_full_name(first_name, last_name)
     if not client:

@@ -14,7 +14,7 @@ transaction_router = Blueprint("transaction_route", __name__)
 # get list of transaction
 # optional filtering using query params:
 #   start_date/end_date to filter transactions between dates
-#   transaction_type for 'recieve'/'send' transactions
+#   transaction_type for 'receive'/'send' transactions
 #   branch_id to find only transactions in this branch
 @transaction_router.get("/")
 def get_transactions():
@@ -51,12 +51,11 @@ def get_transactions():
         get_branch_by_id(db, branch_id)  # raises NotFound if branch is not found
 
     transactions = get_transactions_with_filters(db, start_date, end_date, transaction_type, branch_id)
-
     return jsonify([transaction.to_dict() for transaction in transactions])
 
 # get specific transaction by id
 @transaction_router.get("/<int:transaction_id>")
-def get_transaction_by_id(transaction_id):
+def get_transaction_by_id_route(transaction_id):
     db = g.db
 
     transaction = get_transaction_by_id(db, transaction_id)
@@ -76,7 +75,7 @@ def get_transaction_by_user(user_id):
 #====================POST METHODS====================#
 
 # create a transaction, body json format:
-# all fields a required
+# all fields are required
 # {
 #     "quantity": int,
 #     "transaction_type": "send"/"receive"

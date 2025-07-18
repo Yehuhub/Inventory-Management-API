@@ -3,14 +3,14 @@ from http import HTTPStatus
 from services.item_service import get_all_items, get_item_by_id, get_item_price_by_id_and_amount, create_item, get_item_prices_by_id, get_item_stocks_by_item_id
 from services.branch_service import get_branch_by_id
 from services.item_stock_service import get_item_stock_by_branch_and_item, update_item_stock
-from services.price_service import update_price, get_price_by_id
+from services.price_service import update_price, get_price_by_id, create_price
 from models import Item
 from werkzeug.exceptions import BadRequest
 
 item_router = Blueprint("item_router", __name__)
 
 #====================GET METHODS====================#
-# return a json list of all items
+# return a list of all items
 @item_router.get("/")
 def get_items_route():
     db = g.db
@@ -70,10 +70,12 @@ def get_all_item_stock(item_id):
 @item_router.get("/<int:item_id>/stock/<int:branch_id>")
 def get_stock_for_item_in_branch(item_id, branch_id):
     db = g.db
-    item = get_item_by_id(item_id)
-    branch = get_branch_by_id(branch_id)
+    item = get_item_by_id(db, item_id)
+    branch = get_branch_by_id(db, branch_id)
 
-    stock = get_item_stock_by_branch_and_item(db, item_id, branch_id)
+    stock = get_item_stock_by_branch_and_item(db, branch_id, item_id)
+    if not stock:
+        return jsonify("Item not available for this branch"), HTTPStatus.OK
     return jsonify(stock.to_dict()), HTTPStatus.OK
 
 #====================POST METHODS====================#
@@ -98,12 +100,25 @@ def create_new_item():
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
 
+@item_router.post("/price")
+def add_price_to_item():
+    db = g.db
+    data = request.get_json()
+
+    required_fields = ["item_id", "min_quantity", "price_per_unit"]
+    for field in required_fields:
+        if field not in data:
+            raise BadRequest(f"Missing required field: {field}")
+
+    price = create_price(db, data)
+    return jsonify(price.to_dict()), 201
+    
 
 #====================PATCH METHODS====================#
 
 # patch method for updating stock quantity
 @item_router.patch("/<int:item_id>/stock/<int:branch_id>")
-def update_item_stock(item_id, branch_id):
+def update_item_stock_route(item_id, branch_id):
     db = g.db
     data = request.get_json()
 
@@ -111,11 +126,14 @@ def update_item_stock(item_id, branch_id):
     if quantity is None or not isinstance(quantity, int) or quantity < 0:
         raise BadRequest("Invalid quantity")
     
-    item_stock = get_item_stock_by_branch_and_item(db, item_id, branch_id)
+    item_stock = get_item_stock_by_branch_and_item(db, item_id=item_id, branch_id=branch_id)
+    if not item_stock:
+        return jsonify("Item stock was not found, create item stock before changing quantity"), HTTPStatus.OK
+
     updated_stock = update_item_stock(db, item_stock.id, {"quantity": quantity})
     return jsonify(updated_stock.to_dict()), HTTPStatus.OK
 
-# patch method, finds price matched by item_id and min_quantity, and updates quantity and price
+# patch method, finds price matched by price_id and min_quantity, and updates quantity and price
 @item_router.patch("/price/<int:price_id>")
 def update_item_price_by_price_id(price_id):
     db = g.db

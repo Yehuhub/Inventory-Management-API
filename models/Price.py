@@ -21,7 +21,7 @@ class Price(Base):
 
     @validates('min_quantity')
     def validate_min_quantity(self, key, value: int) -> int:
-        if value <= 0:
+        if value < 0:
             raise ValueError("min_quantity must be a positive integer.")
         return value
 

@@ -1,6 +1,5 @@
 from repository.category_repository import CategoryRepository
 from werkzeug.exceptions import BadRequest
-from models import Category
 
 def get_category_by_id(db, category_id):
     category_repository = CategoryRepository(db)

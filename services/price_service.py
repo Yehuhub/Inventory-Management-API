@@ -1,11 +1,11 @@
 from repository.price_repository import PriceRepository
-from werkzeug.exceptions import NotFound, InternalServerError, BadRequest
+from werkzeug.exceptions import InternalServerError, BadRequest
 
 def get_price_by_id(db, price_id: int):
     price_repository = PriceRepository(db)
     price = price_repository.get_by_id(price_id)
     if not price:
-        raise NotFound("Price not found")
+        raise BadRequest("Price not found")
     return price
 
 def list_prices(db):

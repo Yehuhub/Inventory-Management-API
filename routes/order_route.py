@@ -3,7 +3,6 @@ from http import HTTPStatus
 from werkzeug.exceptions import BadRequest
 from services.order_service import get_order_by_id, get_orders_with_filters, get_order_items, create_order, update_order
 from services.user_service import get_orders_by_user_id
-from services.client_service import get_orders_of_client
 from datetime import datetime
 from models.Order import ORDER_STATUS
 
@@ -53,12 +52,6 @@ def get_orders_by_user(user_id):
     orders = get_orders_by_user_id(db, user_id)
     return jsonify([order.to_dict() for order in orders]), HTTPStatus.OK
 
-# get all orders for client
-@order_router.get("/client/<int:client_id>")
-def get_order_by_client(client_id):
-    db = g.db
-    orders = get_orders_of_client(db, client_id)
-    return jsonify([order.to_dict() for order in orders]), HTTPStatus.OK
 
 # get the order items for a specific order id
 @order_router.get("/order-items/<int:order_id>")
@@ -71,6 +64,21 @@ def get_order_items_by_order_id(order_id):
 
 #==========POST METHODS==========#
 
+# request body format:
+# {
+#     "user_id": int,
+#     "client_id": int,
+#     "order_items":[
+#         {
+#             "item_id": int,
+#             "quantity": int,
+#         },
+#         {
+#             "item_id": int,
+#             "quantity": int,
+#         },
+#     ]
+# }
 @order_router.post("/")
 def create_a_new_order():
     db = g.db

@@ -4,8 +4,8 @@ from services.user_service import get_user_by_id
 from services.item_service import get_item_by_id
 from services.branch_service import get_branch_by_id
 from services.item_stock_service import get_item_stock_by_branch_and_item
-from werkzeug.exceptions import NotFound, InternalServerError, BadRequest
-from models.Transaction import TRANSACTION_TYPES, Transaction
+from werkzeug.exceptions import NotFound, InternalServerError, BadRequest, Unauthorized
+from models.Transaction import Transaction
 from models.ItemStock import ItemStock
 
 # get specific transaction by id
@@ -34,8 +34,11 @@ def create_transaction(db, transaction_data: dict):
         transaction_type = transaction_data["transaction_type"].lower()
         description = transaction_data.get("description", "")
 
+        if user.branch != branch and branch not in user.managed_branches:
+            raise Unauthorized("User does not belong to this branch")
+
         # Get the item stock (can be None)
-        stock = get_item_stock_by_branch_and_item(db, item.id, branch.id)
+        stock = get_item_stock_by_branch_and_item(db, branch.id, item.id)
 
         if transaction_type == "send":
             if not stock:

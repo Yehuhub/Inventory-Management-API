@@ -45,5 +45,6 @@ class Order(Base):
             "status": self.status,
             "delivery_date": self.delivery_date, #might need isoformat
             "created_at": self.createdAt.isoformat(),
-            "updated_at": self.updatedAt.isoformat()
+            "updated_at": self.updatedAt.isoformat(),
+            "total_price": self.total_price
         }

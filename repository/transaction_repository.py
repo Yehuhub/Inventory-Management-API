@@ -84,4 +84,4 @@ class TransactionRepository(BaseRepository):
             return self.list_all()
         
         stmt = stmt.order_by(transaction_date.desc())
-        return self.db.execute(stmt).scalars().all
+        return self.db.execute(stmt).scalars().all()
