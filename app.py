@@ -29,7 +29,7 @@ def handle_db_error(e):
     return jsonify({
         "error": "Database Error",
         "message": "An unexpected database error occurred"
-    }), 500
+    }), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 # fall back error handler for unexpected errors
