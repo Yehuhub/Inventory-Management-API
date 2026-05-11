@@ -1,12 +1,20 @@
 import jwt
+from datetime import datetime, timezone, timedelta
 from functools import wraps
 from flask import g, jsonify
 from http import HTTPStatus
 from settings import JWT_SECRET
 
+TOKEN_EXPIRY_HOURS = 1
+
 
 def create_token(user_id: int, role: str) -> str:
-    return jwt.encode({"user_id": user_id, "role": role}, JWT_SECRET, algorithm="HS256")
+    payload = {
+        "user_id": user_id,
+        "role": role,
+        "exp": datetime.now(timezone.utc) + timedelta(hours=TOKEN_EXPIRY_HOURS)
+    }
+    return jwt.encode(payload, JWT_SECRET, algorithm="HS256")
 
 
 def decode_token(token: str) -> dict:
