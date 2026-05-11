@@ -6,6 +6,7 @@ from .client_route import client_router
 from .category_route import category_router
 from .transaction_route import transaction_router
 from .export_import_route import export_import_router
+from .auth_route import auth_router
 
 __all__ = [
     "item_router",
@@ -15,5 +16,6 @@ __all__ = [
     "client_router",
     "category_router",
     "transaction_router",
-    "export_import_router"
+    "export_import_router",
+    "auth_router"
 ]

@@ -1,12 +1,14 @@
 from flask import Blueprint, jsonify
 from utils.export_excel import export_table_to_excel
 from utils.csv_importer import import_items_categories_from_csv
+from utils.auth import require_manager
 from http import HTTPStatus
 
 export_import_router = Blueprint("export", __name__)
 
 # route to export a selected table to excel file
 @export_import_router.get("/export/<table_name>")
+@require_manager
 def export_table(table_name):
     try:
         message = export_table_to_excel(table_name)
@@ -18,6 +20,7 @@ def export_table(table_name):
     
 # route to import a csv
 @export_import_router.post("/import/csv")
+@require_manager
 def import_items_and_categories_csv_route():
     import_items_categories_from_csv()
     return jsonify("Items and Categories imported"), HTTPStatus.OK

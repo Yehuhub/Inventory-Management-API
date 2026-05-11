@@ -1,5 +1,5 @@
 from repository.user_repository import UserRepository
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, Unauthorized
 
 def get_user_by_id(db, user_id):
     user_repository = UserRepository(db)
@@ -46,6 +46,13 @@ def update_user(db, user_id, updates):
     if not user:
         raise BadRequest("User not found")
     return repo.update(user, updates)
+
+def get_user_by_phone(db, phone_number):
+    repo = UserRepository(db)
+    user = repo.get_by_phone_number(phone_number)
+    if not user:
+        raise Unauthorized("Invalid phone number")
+    return user
 
 def get_orders_by_user_id(db, user_id):
     repo = UserRepository(db)

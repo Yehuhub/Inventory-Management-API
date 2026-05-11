@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify, g
 from http import HTTPStatus
 from werkzeug.exceptions import BadRequest
+from utils.auth import require_manager
 from services.category_service import (
     get_all_categories, create_category, get_items_by_category_id, get_items_by_category_name,
     get_category_by_name, delete_category as delete_category_by_id
@@ -36,6 +37,7 @@ def get_items_by_category_name_route(category_name):
 
 # create a new category
 @category_router.post("/")
+@require_manager
 def create_category_route():
     db = g.db
     data = request.get_json()
@@ -53,6 +55,7 @@ def create_category_route():
 
 # delete a category by id
 @category_router.delete("/<int:category_id>")
+@require_manager
 def delete_category_by_id_route(category_id):
     db = g.db
     delete_category_by_id(db, category_id)
@@ -61,6 +64,7 @@ def delete_category_by_id_route(category_id):
 
 # delete category by name
 @category_router.delete("/name/<string:category_name>")
+@require_manager
 def delete_category_by_name_route(category_name):
     db = g.db
     category = get_category_by_name(db, category_name)

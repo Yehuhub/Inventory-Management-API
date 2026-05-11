@@ -6,6 +6,7 @@ from services.item_stock_service import get_item_stock_by_branch_and_item, updat
 from services.price_service import update_price, get_price_by_id, create_price
 from models import Item
 from werkzeug.exceptions import BadRequest
+from utils.auth import require_manager
 
 item_router = Blueprint("item_router", __name__)
 
@@ -81,6 +82,7 @@ def get_stock_for_item_in_branch(item_id, branch_id):
 #====================POST METHODS====================#
 # save a new item to the db
 @item_router.post("/")
+@require_manager
 def create_new_item():
     db = g.db
     data = request.get_json()
@@ -101,6 +103,7 @@ def create_new_item():
         return jsonify({"error": str(e)}), 400
 
 @item_router.post("/price")
+@require_manager
 def add_price_to_item():
     db = g.db
     data = request.get_json()
@@ -118,6 +121,7 @@ def add_price_to_item():
 
 # patch method for updating stock quantity
 @item_router.patch("/<int:item_id>/stock/<int:branch_id>")
+@require_manager
 def update_item_stock_route(item_id, branch_id):
     db = g.db
     data = request.get_json()
@@ -135,6 +139,7 @@ def update_item_stock_route(item_id, branch_id):
 
 # patch method, finds price matched by price_id and min_quantity, and updates quantity and price
 @item_router.patch("/price/<int:price_id>")
+@require_manager
 def update_item_price_by_price_id(price_id):
     db = g.db
     data = request.get_json()

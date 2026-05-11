@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, g
 from http import HTTPStatus
 from werkzeug.exceptions import BadRequest
 from models import User
+from utils.auth import require_manager
 from services.user_service import (
     get_user_by_id,
     get_all_users,
@@ -32,6 +33,7 @@ def get_user_by_id_route(user_id):
 
 # Create a new user
 @user_router.post("/")
+@require_manager
 def create_new_user_route():
     db = g.db
     data = request.get_json()
@@ -55,6 +57,7 @@ def create_new_user_route():
 
 # Delete a user by ID
 @user_router.delete("/<int:user_id>")
+@require_manager
 def delete_user_route(user_id):
     db = g.db
     delete_user(db, user_id)
@@ -64,6 +67,7 @@ def delete_user_route(user_id):
 
 # Update some fields of a user
 @user_router.patch("/<int:user_id>")
+@require_manager
 def patch_user_route(user_id):
     db = g.db
     data = request.get_json()

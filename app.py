@@ -1,11 +1,13 @@
-from flask import Flask, g, jsonify
+from flask import Flask, g, jsonify, request
 from models import *
 from data.ORMSetup import get_db
 from data.ORMSetup import engine, Base
 from werkzeug.exceptions import HTTPException
 from sqlalchemy.exc import SQLAlchemyError
 from routes import *
+from utils.auth import decode_token
 from http import HTTPStatus
+import jwt
 
 
 Base.metadata.create_all(engine)
@@ -43,10 +45,31 @@ def handle_value_error(e):
         "error": str(e),
     }), HTTPStatus.BAD_REQUEST
 
+AUTH_EXEMPT_PATHS = {"/api/auth/login"}
+
 # db session factory called on each request
 @app.before_request
 def create_db_session():
     g.db = get_db()  # Create a new session for each request
+
+@app.before_request
+def authenticate_request():
+    if request.path in AUTH_EXEMPT_PATHS:
+        return
+
+    auth_header = request.headers.get("Authorization")
+    if not auth_header or not auth_header.startswith("Bearer "):
+        return jsonify({"error": "Missing or invalid Authorization header"}), HTTPStatus.UNAUTHORIZED
+
+    token = auth_header.split(" ", 1)[1]
+    try:
+        payload = decode_token(token)
+        g.user_id = payload["user_id"]
+        g.role = payload["role"]
+    except jwt.ExpiredSignatureError:
+        return jsonify({"error": "Token expired"}), HTTPStatus.UNAUTHORIZED
+    except jwt.InvalidTokenError:
+        return jsonify({"error": "Invalid token"}), HTTPStatus.UNAUTHORIZED
 
 # db session teardown called after each request
 @app.teardown_request
@@ -58,6 +81,7 @@ def close_db_session(exception=None):
 
 #==================Setup router blueprints==================#
 
+app.register_blueprint(auth_router, url_prefix="/api/auth")
 app.register_blueprint(item_router, url_prefix="/api/items")
 app.register_blueprint(order_router, url_prefix="/api/orders")
 app.register_blueprint(user_router, url_prefix="/api/users")

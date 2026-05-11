@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify, g
 from http import HTTPStatus
 from werkzeug.exceptions import BadRequest
+from utils.auth import require_manager
 from services.branch_service import (
     get_branch_by_id, get_all_branches, get_manager_by_branch_id,
     get_users_by_branch_id, get_transactions_by_branch_id,
@@ -63,6 +64,7 @@ def get_branch_item_stocks(branch_id):
 # ====================POST METHODS====================#
 
 @branch_router.post("/")
+@require_manager
 def create_branch_route():
     db = g.db
     data = request.get_json()
@@ -85,8 +87,8 @@ def create_branch_route():
 # ====================DELETE METHODS====================#
 
 @branch_router.delete("/<int:branch_id>")
+@require_manager
 def delete_branch_route(branch_id):
-    print("in delete")
     db = g.db
     delete_branch(db, branch_id)
     return jsonify({"message": f"Branch {branch_id} deleted"}), HTTPStatus.OK
@@ -95,6 +97,7 @@ def delete_branch_route(branch_id):
 # ====================PATCH METHODS====================#
 
 @branch_router.patch("/<int:branch_id>/assign-manager")
+@require_manager
 def assign_manager(branch_id):
     db = g.db
     data = request.get_json()
@@ -108,6 +111,7 @@ def assign_manager(branch_id):
 
 
 @branch_router.patch("/<int:branch_id>/remove-manager")
+@require_manager
 def remove_manager(branch_id):
     db = g.db
     updated_branch = remove_manager_from_branch(db, branch_id)

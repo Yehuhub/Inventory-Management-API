@@ -6,6 +6,8 @@ load_dotenv()
 
 CSV_IMPORT_FILE_PATH = os.environ.get("CSV_IMPORT_FILE_PATH")
 
+JWT_SECRET = os.environ.get("JWT_SECRET", "dev-secret-change-me-in-production-use-env")
+
 DB_USER = os.environ.get("DB_USER")
 DB_PASSWORD = os.environ.get("DB_PASSWORD")
 DB_IP = os.environ.get("DB_IP")
